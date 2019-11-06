@@ -116,11 +116,17 @@ class FCMPParser(ast.NodeVisitor):
     def visit_BinOp(self, node):
         lhs = self.visit(node.left)
         rhs = self.visit(node.right)
-        return FCMPParser._binop_maker[type(node.op)](lhs, rhs)
+        try:
+            return FCMPParser._binop_maker[type(node.op)](lhs, rhs)
+        except KeyError as k:
+            raise FCMPParserError("The operation, {}, is not supported yet.".format(k.args[0]))
 
     def visit_UnaryOp(self, node):
         operand = self.visit(node.operand)
-        return FCMPParser._unaryop_maker[type(node.op)](operand)
+        try:
+            return FCMPParser._unaryop_maker[type(node.op)](operand)
+        except KeyError as k:
+            raise FCMPParserError("The operation, {}, is not supported yet.".format(k.args[0]))
 
     def visit_If(self, node):
         cond = self.visit(node.test)
@@ -170,18 +176,21 @@ class FCMPParser(ast.NodeVisitor):
         ops = [self.visit(node.left)]
         ops += [self.visit(i) for i in node.comparators]
         res = []
-        for i in range(len(node.ops)):
-            lhs = ops[i]
-            rhs = ops[i + 1]
-            res.append(FCMPParser._binop_maker[type(node.ops[i])](lhs, rhs))
-        if len(res) == 1:
-            return Stmt(res[0],
-                        node.lineno,
-                        node.col_offset
-                        )
-        ret = FCMPParser._binop_maker[ast.And](res[0], res[1])
-        for i in range(2, len(res)):
-            ret = FCMPParser._binop_maker[ast.And](ret, res[i])
+        try:
+            for i in range(len(node.ops)):
+                lhs = ops[i]
+                rhs = ops[i + 1]
+                res.append(FCMPParser._binop_maker[type(node.ops[i])](lhs, rhs))
+            if len(res) == 1:
+                return Stmt(res[0],
+                            node.lineno,
+                            node.col_offset
+                            )
+            ret = FCMPParser._binop_maker[ast.And](res[0], res[1])
+            for i in range(2, len(res)):
+                ret = FCMPParser._binop_maker[ast.And](ret, res[i])
+        except KeyError as k:
+            raise FCMPParserError("The operation, {}, is not supported yet.".format(k.args[0]))
         return Stmt(ret,
                     node.lineno,
                     node.col_offset
@@ -193,10 +202,13 @@ class FCMPParser(ast.NodeVisitor):
         #     return operator.not_(self.visit(node.values[0]))
         assert_fcmp_error(isinstance(node.op, (ast.And, ast.Or)), "Binary is supposed to be either and or or!")
         values = [self.visit(i).prg for i in node.values]
-        return Stmt(FCMPParser._binop_maker[type(node.op)](*values),
-                    node.lineno,
-                    node.col_offset
-                    )
+        try:
+            return Stmt(FCMPParser._binop_maker[type(node.op)](*values),
+                        node.lineno,
+                        node.col_offset
+                        )
+        except KeyError as k:
+            raise FCMPParserError("The operation, {}, is not supported yet.".format(k.args[0]))
 
     def visit_Num(self, node):
         return node.n
@@ -228,7 +240,10 @@ class FCMPParser(ast.NodeVisitor):
                           "Only id-function function call is supported so far!")
         func_id = node.func.id
         args = [self.visit(i) for i in node.args]
-        return FCMPParser._callop_maker[func_id](args)  # 1 to 10
+        try:
+            return FCMPParser._callop_maker[func_id](args)  # 1 to 10
+        except KeyError as k:
+            raise FCMPParserError("The function call, {}, is not supported yet.".format(k.args[0]))
 
     def visit_For(self, node):
         # for i in range() or for i in list/array
@@ -256,8 +271,7 @@ class FCMPParser(ast.NodeVisitor):
                           )
     @property
     def fcmp_prg(self):
-        # reorder stmts
-        self.stmts = sorted(self.stmts)
+        # self.stmts = sorted(self.stmts)
         self._fcmp_prg = ''
         pre_lineno = self.stmts[0].lineno
         for stmt in self.stmts:

@@ -12,7 +12,7 @@ def cast_array(*args):
 
 def out_args(*args):
     ret = [arg for arg in args[0]]
-    return 'outargs ' + ', '.format(ret) + ';'
+    return 'outargs ' + ', '.join(ret) + ';'
 
 
 def range(*args, ):

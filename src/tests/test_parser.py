@@ -1,8 +1,9 @@
 from __future__ import print_function, division, absolute_import, unicode_literals
 
+import ast
+
 from ..parser import FCMPParser, python_to_fcmp
 from ..decorator import *
-import ast
 
 source = \
 '''

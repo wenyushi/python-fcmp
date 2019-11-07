@@ -6,6 +6,8 @@ from __future__ import print_function, division, absolute_import, unicode_litera
 
 import functools
 
+from .error import FCMPParserError
+
 
 def cast_array(*args):
     """ cast argument in python function as array type. """
@@ -29,3 +31,14 @@ def out_args(*args):
             func(*args, **kwargs)
         return _wrapper
     return decorator_wrapper
+
+
+def unsupport_op_order(func):
+    @functools.wraps(func)
+    def _wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except KeyError as k:
+            raise FCMPParserError("The operator or order, {}, is not supported yet.".format(k.args[0]))
+
+    return _wrapper

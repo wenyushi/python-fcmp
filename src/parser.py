@@ -5,10 +5,11 @@ import ast
 from pprint import pprint
 from inspect import getsource
 
-from src import opeartion
+from src import opeartor
 from src import function
 from .statement import Stmt
 from .error import assert_fcmp_error, FCMPParserError
+from .decorator import unsupport_op_order
 
 
 class FCMPParser(ast.NodeVisitor):
@@ -22,26 +23,26 @@ class FCMPParser(ast.NodeVisitor):
 
     """
     _binop_maker = {
-        ast.Add: opeartion.add,
-        ast.Sub: opeartion.sub,
-        ast.Mult: opeartion.mul,
-        ast.Div: opeartion.truediv,
-        ast.BitOr: opeartion.or_,
-        ast.BitAnd: opeartion.and_,
-        ast.BitXor: opeartion.xor,
-        ast.Gt: opeartion.gt,
-        ast.GtE: opeartion.ge,
-        ast.Lt: opeartion.lt,
-        ast.LtE: opeartion.le,
-        ast.Eq: opeartion.eq,
-        ast.NotEq: opeartion.ne,
-        ast.And: opeartion._and,
-        ast.Or: opeartion._or,
+        ast.Add: opeartor.add,
+        ast.Sub: opeartor.sub,
+        ast.Mult: opeartor.mul,
+        ast.Div: opeartor.truediv,
+        ast.BitOr: opeartor.or_,
+        ast.BitAnd: opeartor.and_,
+        ast.BitXor: opeartor.xor,
+        ast.Gt: opeartor.gt,
+        ast.GtE: opeartor.ge,
+        ast.Lt: opeartor.lt,
+        ast.LtE: opeartor.le,
+        ast.Eq: opeartor.eq,
+        ast.NotEq: opeartor.ne,
+        ast.And: opeartor._and,
+        ast.Or: opeartor._or,
     }
 
     _unaryop_maker = {
-        ast.USub: opeartion.neg,
-        ast.Not: opeartion.not_
+        ast.USub: opeartor.neg,
+        ast.Not: opeartor.not_
     }
 
     _callop_maker = {
@@ -113,20 +114,16 @@ class FCMPParser(ast.NodeVisitor):
     def visit_Name(self, node):
         return node.id
 
+    @unsupport_op_order
     def visit_BinOp(self, node):
         lhs = self.visit(node.left)
         rhs = self.visit(node.right)
-        try:
-            return FCMPParser._binop_maker[type(node.op)](lhs, rhs)
-        except KeyError as k:
-            raise FCMPParserError("The operation, {}, is not supported yet.".format(k.args[0]))
+        return FCMPParser._binop_maker[type(node.op)](lhs, rhs)
 
+    @unsupport_op_order
     def visit_UnaryOp(self, node):
         operand = self.visit(node.operand)
-        try:
-            return FCMPParser._unaryop_maker[type(node.op)](operand)
-        except KeyError as k:
-            raise FCMPParserError("The operation, {}, is not supported yet.".format(k.args[0]))
+        return FCMPParser._unaryop_maker[type(node.op)](operand)
 
     def visit_If(self, node):
         cond = self.visit(node.test)
@@ -172,43 +169,40 @@ class FCMPParser(ast.NodeVisitor):
                                        )
                                   )
 
+    @unsupport_op_order
     def visit_Compare(self, node):
         ops = [self.visit(node.left)]
         ops += [self.visit(i) for i in node.comparators]
         res = []
-        try:
-            for i in range(len(node.ops)):
-                lhs = ops[i]
-                rhs = ops[i + 1]
-                res.append(FCMPParser._binop_maker[type(node.ops[i])](lhs, rhs))
-            if len(res) == 1:
-                return Stmt(res[0],
-                            node.lineno,
-                            node.col_offset
-                            )
-            ret = FCMPParser._binop_maker[ast.And](res[0], res[1])
-            for i in range(2, len(res)):
-                ret = FCMPParser._binop_maker[ast.And](ret, res[i])
-        except KeyError as k:
-            raise FCMPParserError("The operation, {}, is not supported yet.".format(k.args[0]))
+        for i in range(len(node.ops)):
+            lhs = ops[i]
+            rhs = ops[i + 1]
+            res.append(FCMPParser._binop_maker[type(node.ops[i])](lhs, rhs))
+        if len(res) == 1:
+            return Stmt(res[0],
+                        node.lineno,
+                        node.col_offset
+                        )
+        ret = FCMPParser._binop_maker[ast.And](res[0], res[1])
+        for i in range(2, len(res)):
+            ret = FCMPParser._binop_maker[ast.And](ret, res[i])
+
         return Stmt(ret,
                     node.lineno,
                     node.col_offset
                     )
 
+    @unsupport_op_order
     def visit_BoolOp(self, node):
         # n = len(node.values)
         # if n == 1:
         #     return operator.not_(self.visit(node.values[0]))
         assert_fcmp_error(isinstance(node.op, (ast.And, ast.Or)), "Binary is supposed to be either and or or!")
         values = [self.visit(i).prg for i in node.values]
-        try:
-            return Stmt(FCMPParser._binop_maker[type(node.op)](*values),
-                        node.lineno,
-                        node.col_offset
-                        )
-        except KeyError as k:
-            raise FCMPParserError("The operation, {}, is not supported yet.".format(k.args[0]))
+        return Stmt(FCMPParser._binop_maker[type(node.op)](*values),
+                    node.lineno,
+                    node.col_offset
+                    )
 
     def visit_Num(self, node):
         return node.n
@@ -234,16 +228,14 @@ class FCMPParser(ast.NodeVisitor):
         # FCMP index starting from 1
         return self.visit(node.value) + 1
 
+    @unsupport_op_order
     def visit_Call(self, node):
         # Yet, no function pointer supported
         assert_fcmp_error(isinstance(node.func, ast.Name),
                           "Only id-function function call is supported so far!")
         func_id = node.func.id
         args = [self.visit(i) for i in node.args]
-        try:
-            return FCMPParser._callop_maker[func_id](args)  # 1 to 10
-        except KeyError as k:
-            raise FCMPParserError("The function call, {}, is not supported yet.".format(k.args[0]))
+        return FCMPParser._callop_maker[func_id](args)  # 1 to 10
 
     def visit_For(self, node):
         # for i in range() or for i in list/array
@@ -313,3 +305,24 @@ def python_to_fcmp(func, print=False):
     if print:
         parser.pretty_print()
     return parser.fcmp_prg
+
+
+def register_fcmp_routines(conn, routine_code, function_tbl_name):
+    """
+    Register FCMP Routines on CAS
+
+    Parameters
+    ----------
+    conn : CAS
+        Specifies the CAS connection object.
+    routine_code : string
+        specifies the FCMP code.
+    function_tbl_name : string
+        Specifies the name of CAS function table.
+
+    """
+    if not conn.has_actionset('fcmpact'):
+        conn.loadactionset(actionSet = 'fcmpact', _messagelevel = 'error')
+    conn.addRoutines(routineCode=routine_code, package = 'pkg',
+                     funcTable=dict(name=function_tbl_name, replace=1))
+

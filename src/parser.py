@@ -49,7 +49,14 @@ class FCMPParser(ast.NodeVisitor):
         'cast_array': function.cast_array,
         'out_args': function.out_args,
         'range': function.range,
-        'len': function.len_
+        'len': function.len_,
+        'max': function.max_,
+        'min': function.min_,
+        'mean': function.mean_,
+        'pow': function.pow_,
+        'sum': function.sum_,
+        'int': function.int_,
+        'abs': function.abs_
     }
 
     def __init__(self):

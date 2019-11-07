@@ -35,3 +35,35 @@ def range(*args, ):
 
 def len_(a):
     return 'dim({})'.format(a)
+
+
+def max_(*args):
+    res = [str(arg) for arg in args[0]]
+    return 'max({})'.format(', '.join(res))
+
+
+def min_(*args):
+    res = [str(arg) for arg in args[0]]
+    return 'min({})'.format(', '.join(res))
+
+
+def mean_(*args):
+    res = [str(arg) for arg in args[0]]
+    return 'mean({})'.format(', '.join(res))
+
+
+def sum_(*args):
+    res = [str(arg) for arg in args[0]]
+    return 'sum({})'.format(', '.join(res))
+
+
+def pow_(a, b):
+    return 'pow({}, {})'.format(a, b)
+
+
+def int_(a):
+    return 'int({})'.format(a[0])
+
+
+def abs_(a):
+    return 'abs({})'.format(a[0])

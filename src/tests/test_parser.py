@@ -43,6 +43,17 @@ def study_day(intervention_date, event_date):
     return n
 
 
+def cyclic_lr(rate, iterNum, batch, initRate):
+    num_batch_per_epoch = 10
+    step_size = 10
+    max_lr = 0.01
+    batch_cum = num_batch_per_epoch * iterNum + batch
+    cycle = int(batch_cum / (2 * step_size) + 1)
+    x = abs(batch_cum / step_size - 2 * cycle + 1)
+    rate = initRate + (max_lr - initRate) * max(0, 1-x)
+    return rate
+
+
 @cast_array('a', 'b')
 def dummy_function(a, b):
     b = 10
@@ -54,6 +65,10 @@ def test_parser():
     par = FCMPParser()
     par.visit(expr)
     par.pretty_print()
+
+
+def test_cyclic_lr():
+    python_to_fcmp(cyclic_lr, True)
 
 
 def test_python_to_fcmp():

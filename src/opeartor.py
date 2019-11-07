@@ -54,7 +54,7 @@ def abs(a):
 
 def add(a, b):
     "Same as a + b."
-    return '{} + {}'.format(a, b)
+    return '({} + {})'.format(a, b)
 
 
 def and_(a, b):
@@ -98,7 +98,7 @@ def rshift(a, b):
 
 def sub(a, b):
     "Same as a - b."
-    return '{} - {}'.format(a, b)
+    return '({} - {})'.format(a, b)
 
 
 def truediv(a, b):

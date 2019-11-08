@@ -4,6 +4,7 @@ import ast
 
 from ..parser import FCMPParser, python_to_fcmp
 from ..decorator import *
+from ..error import assert_fcmp_error
 
 source = \
 '''
@@ -78,17 +79,51 @@ def test_parser():
 
 
 def test_cyclic_lr():
-    python_to_fcmp(cyclic_lr, True)
+    code = python_to_fcmp(cyclic_lr, True)
+    assert_fcmp_error(code == 'function cyclic_lr(rate, iterNum, batch, initRate);\n'
+                              '    num_batch_per_epoch = 10;\n'
+                              '    step_size = 10;\n'
+                              '    max_lr = 0.01;\n'
+                              '    batch_cum = (num_batch_per_epoch * iterNum + batch);\n'
+                              '    cycle = int((batch_cum / 2 * step_size + 1));\n'
+                              '    x = abs(((batch_cum / step_size - 2 * cycle) + 1));\n'
+                              '    rate = (initRate + (max_lr - initRate) * max(0, (1 - x)));\n'
+                              '    return (rate);\n'
+                              'endsub;\n', "")
 
 
 def test_python_to_fcmp():
-    python_to_fcmp(study_day, True)
+    code = python_to_fcmp(study_day, True)
+    assert_fcmp_error(code == 'function study_day(intervention_date[*], event_date[*]);outargs intervention_date;\n'
+                              '    n = (event_date - intervention_date);\n'
+                              '    m = 0;\n'
+                              '    a = [1, 2, 3];\n'
+                              '    c = a[1];\n'
+                              '    do i = 3 to 10 by 1;\n'
+                              '        a = i;\n'
+                              '    end;\n'
+                              '    BAND(n > 0, n eq 0 & 0 eq m & m eq 0);\n'
+                              '    if n <= 0 & m > 0 then do;\n'
+                              '        n = ((n + 1 * 4) - 121);\n'
+                              '    end;\n'
+                              '    else \n'
+                              '         if m eq 0 then do;\n'
+                              '        m = 2;\n'
+                              '        n = 1;\n'
+                              '         end;\n'
+                              '    end;\n'
+                              '    return ;\n'
+                              'endsub;\n', "")
 
 
 def test_back_prop():
     code = python_to_fcmp(back_prop, True)
-    print(code)
-
+    assert_fcmp_error(code == 'function back_prop(srcHeight, srcWidth, srcDepth, srcY[*], Y[*], weights[*], deltas[*], gradient_out[*], srcDeltas_out[*]);outargs gradient_out, srcDeltas_out;\n' \
+                              '    gradient_out[1] = deltas[1] * srcY[1] ** 2;\n'
+                              '    gradient_out[2] = deltas[1];\n' \
+                              '    srcDeltas_out[1] = deltas[1] * (2 * weights[1] * srcY[1] + weights[2]);\n' \
+                              '    return ;\n'
+                              'endsub;\n', "")
 
 
 def test_decorator():

@@ -85,10 +85,11 @@ class FCMPParser(ast.NodeVisitor):
                 for r in ret:
                     args[args.index(r[:-3])] = r
                     # args = args.replace(r[:-3], r)
-                args = ', '.join(args)
+
             if dc.func.id == 'out_args':
                 str_out_args = self.visit(dc)
 
+        args = ', '.join(args)
         stmt = Stmt('function {}({});{}'.format(self.func_name, args, str_out_args),
                     node.lineno,
                     node.col_offset)

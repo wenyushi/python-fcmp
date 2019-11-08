@@ -1,6 +1,6 @@
 """
 Decorator of Python function.
-The implementation decorator is in src/function.py
+The implementation decorator is in python_fcmp/function.py
 """
 from __future__ import print_function, division, absolute_import, unicode_literals
 

@@ -5,8 +5,8 @@ import ast
 from pprint import pprint
 from inspect import getsource
 
-from src import operator
-from src import function
+from python_fcmp import operator
+from python_fcmp import function
 from .statement import Stmt
 from .error import assert_fcmp_error, FCMPParserError
 from .decorator import unsupport_op_order

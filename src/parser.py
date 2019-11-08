@@ -5,7 +5,7 @@ import ast
 from pprint import pprint
 from inspect import getsource
 
-from src import opeartor
+from src import operator
 from src import function
 from .statement import Stmt
 from .error import assert_fcmp_error, FCMPParserError
@@ -23,26 +23,27 @@ class FCMPParser(ast.NodeVisitor):
 
     """
     _binop_maker = {
-        ast.Add: opeartor.add,
-        ast.Sub: opeartor.sub,
-        ast.Mult: opeartor.mul,
-        ast.Div: opeartor.truediv,
-        ast.BitOr: opeartor.or_,
-        ast.BitAnd: opeartor.and_,
-        ast.BitXor: opeartor.xor,
-        ast.Gt: opeartor.gt,
-        ast.GtE: opeartor.ge,
-        ast.Lt: opeartor.lt,
-        ast.LtE: opeartor.le,
-        ast.Eq: opeartor.eq,
-        ast.NotEq: opeartor.ne,
-        ast.And: opeartor._and,
-        ast.Or: opeartor._or,
+        ast.Add: operator.add,
+        ast.Sub: operator.sub,
+        ast.Mult: operator.mul,
+        ast.Div: operator.truediv,
+        ast.BitOr: operator.or_,
+        ast.BitAnd: operator.and_,
+        ast.BitXor: operator.xor,
+        ast.Gt: operator.gt,
+        ast.GtE: operator.ge,
+        ast.Lt: operator.lt,
+        ast.LtE: operator.le,
+        ast.Eq: operator.eq,
+        ast.NotEq: operator.ne,
+        ast.And: operator._and,
+        ast.Or: operator._or,
+        ast.Pow: operator.pow
     }
 
     _unaryop_maker = {
-        ast.USub: opeartor.neg,
-        ast.Not: opeartor.not_
+        ast.USub: operator.neg,
+        ast.Not: operator.not_
     }
 
     _callop_maker = {
@@ -74,7 +75,7 @@ class FCMPParser(ast.NodeVisitor):
         # lst = [self.visit(stmt) for stmt in node.body]
         _attr = 'id' if sys.version_info[0] < 3 else 'arg'  # To make py2 and 3 compatible
 
-        args = ', '.join([getattr(arg, _attr) for arg in node.args.args])
+        args = [getattr(arg, _attr) for arg in node.args.args]
 
         # decorator to declare argument data type
         str_out_args = ''
@@ -82,7 +83,9 @@ class FCMPParser(ast.NodeVisitor):
             if dc.func.id == 'cast_array':
                 ret = self.visit(dc)
                 for r in ret:
-                    args = args.replace(r[:-3], r)
+                    args[args.index(r[:-3])] = r
+                    # args = args.replace(r[:-3], r)
+                args = ', '.join(args)
             if dc.func.id == 'out_args':
                 str_out_args = self.visit(dc)
 
@@ -94,7 +97,7 @@ class FCMPParser(ast.NodeVisitor):
             self.visit(node.body[i])
         # endsub
         self.stmts.append(Stmt('endsub;',
-                               node.lineno,
+                               -1,
                                node.col_offset
                                )
                           )
@@ -135,7 +138,7 @@ class FCMPParser(ast.NodeVisitor):
     def visit_If(self, node):
         cond = self.visit(node.test)
         # put cond into if statement
-        self.stmts.append(Stmt('if {} then'.format(cond.prg),
+        self.stmts.append(Stmt('if {} then do;'.format(cond.prg),
                                node.lineno,
                                node.col_offset
                                )
@@ -153,6 +156,12 @@ class FCMPParser(ast.NodeVisitor):
         for i in range(len(node.body)):
             self.visit(node.body[i])
 
+        self.stmts.append(Stmt('end;',
+                               -1,
+                               node.col_offset
+                               )
+                          )
+
         if len(node.orelse) > 0:
             if isinstance(node.orelse[0], ast.If):
                 self.stmts.append(Stmt('else ',
@@ -162,6 +171,11 @@ class FCMPParser(ast.NodeVisitor):
                                   )
                 for i in range(len(node.orelse)):
                     self.visit(node.orelse[i])
+                self.stmts.append(Stmt('end;',
+                                       -1,
+                                       node.col_offset
+                                       )
+                                  )
             else:
                 self.stmts.append(Stmt('else do;',
                                        node.lineno,
@@ -171,7 +185,7 @@ class FCMPParser(ast.NodeVisitor):
                 for i in range(len(node.orelse)):
                     self.visit(node.orelse[i])
                 self.stmts.append(Stmt('end;',
-                                       node.lineno,
+                                       -1,
                                        node.col_offset
                                        )
                                   )
@@ -233,7 +247,11 @@ class FCMPParser(ast.NodeVisitor):
             # return self.visit(node.value)
             raise FCMPParserError("Multiple index doesn't support")
         # FCMP index starting from 1
-        return self.visit(node.value) + 1
+        ret = self.visit(node.value)
+        try:
+            return str(int(ret) + 1)
+        except ValueError:
+            return '{} + {}'.format(ret, '1')
 
     @unsupport_op_order
     def visit_Call(self, node):
@@ -261,9 +279,15 @@ class FCMPParser(ast.NodeVisitor):
         for i in range(len(node.body)):
             self.visit(node.body[i])
 
+        self.stmts.append(Stmt('end;',
+                               -1,
+                               node.col_offset
+                               )
+                          )
+
     def visit_Return(self, node):
-        val = self.visit(node.value)
-        self.stmts.append(Stmt('return ({});'.format(val),
+        val = '' if node.value is None else '({})'.format(self.visit(node.value))
+        self.stmts.append(Stmt('return {};'.format(val),
                                node.lineno,
                                node.col_offset
                                )
@@ -273,9 +297,10 @@ class FCMPParser(ast.NodeVisitor):
         # self.stmts = sorted(self.stmts)
         self._fcmp_prg = ''
         pre_lineno = self.stmts[0].lineno
+        pre_col_offset = self.stmts[0].col_offset
         for stmt in self.stmts:
             # current line number that is the same as prior line number will append statement after prior statement
-            if stmt.lineno == pre_lineno:
+            if stmt.lineno == pre_lineno and stmt.col_offset <= pre_col_offset:
                 self._fcmp_prg = self._fcmp_prg[:-1] + stmt.prg + '\n'
             else:
                 self._fcmp_prg += ' ' * stmt.col_offset
@@ -330,6 +355,6 @@ def register_fcmp_routines(conn, routine_code, function_tbl_name):
     """
     if not conn.has_actionset('fcmpact'):
         conn.loadactionset(actionSet = 'fcmpact', _messagelevel = 'error')
-    conn.addRoutines(routineCode=routine_code, package = 'pkg',
-                     funcTable=dict(name=function_tbl_name, replace=1))
+    conn.addRoutines(routineCode=routine_code, package = 'pkg', saveTable=1,
+                     funcTable=dict(name=function_tbl_name, caslib="casuser", replace=1))
 

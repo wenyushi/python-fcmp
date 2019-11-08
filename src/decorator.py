@@ -16,7 +16,7 @@ def cast_array(*args):
 
         @ functools.wraps(func)
         def _wrapper(*args, **kwargs):
-            func(*args, **kwargs)
+            return func(*args, **kwargs)
         return _wrapper
     return decorator_wrapper
 
@@ -28,7 +28,7 @@ def out_args(*args):
 
         @functools.wraps(func)
         def _wrapper(*args, **kwargs):
-            func(*args, **kwargs)
+            return func(*args, **kwargs)
         return _wrapper
     return decorator_wrapper
 

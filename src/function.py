@@ -15,10 +15,10 @@ def out_args(*args):
     return 'outargs ' + ', '.join(ret) + ';'
 
 
-def range(*args, ):
+def range(*args):
     args = args[0]
     assert_fcmp_error(len(args) <= 3, "Range function can only accept at most 3 arguments")
-    a = 1
+    a = 0
     c = 1
     b = args[0]
     if len(args) == 1:
@@ -34,7 +34,7 @@ def range(*args, ):
 
 
 def len_(a):
-    return 'dim({})'.format(a)
+    return 'dim({})'.format(a[0])
 
 
 def max_(*args):

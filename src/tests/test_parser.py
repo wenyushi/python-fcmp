@@ -21,7 +21,7 @@ def study_day(intervention_date, event_date):
     elif m == 0:
         m = 2
         n = 1
-    return (n)
+    return
 '''
 
 
@@ -40,7 +40,17 @@ def study_day(intervention_date, event_date):
     elif m == 0:
         m = 2
         n = 1
-    return n
+    return
+
+
+@out_args('gradient_out', 'srcDeltas_out')
+@cast_array('srcY', 'Y', 'weights', 'deltas', 'gradient_out', 'srcDeltas_out')
+def back_prop(srcHeight, srcWidth, srcDepth, srcY, Y, weights,
+              deltas, gradient_out, srcDeltas_out):
+    gradient_out[0] = deltas[0] * (srcY[0] ** 2)
+    gradient_out[1] = deltas[0]
+    srcDeltas_out[0] = deltas[0] * (2 * weights[0] * srcY[0] + weights[1])
+    return
 
 
 def cyclic_lr(rate, iterNum, batch, initRate):
@@ -73,6 +83,12 @@ def test_cyclic_lr():
 
 def test_python_to_fcmp():
     python_to_fcmp(study_day, True)
+
+
+def test_back_prop():
+    code = python_to_fcmp(back_prop, True)
+    print(code)
+
 
 
 def test_decorator():

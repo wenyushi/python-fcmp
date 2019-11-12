@@ -20,15 +20,27 @@ def range(*args):
     assert_fcmp_error(len(args) <= 3, "Range function can only accept at most 3 arguments")
     a = 0
     c = 1
-    b = args[0]
+    try:
+        b = str(int(args[0]) - 1)
+    except ValueError:
+        b = '{} - 1'.format(args[0])
     if len(args) == 1:
-        b = args[0]
+        try:
+            b = str(int(args[0]) - 1)
+        except ValueError:
+            b = '{} - 1'.format(args[0])
     elif len(args) == 2:
         a = args[0]
-        b = args[1]
+        try:
+            b = str(int(args[1]) - 1)
+        except ValueError:
+            b = '{} - 1'.format(args[1])
     elif len(args) == 3:
         a = args[0]
-        b = args[1]
+        try:
+            b = str(int(args[1]) - 1)
+        except ValueError:
+            b = '{} - 1'.format(args[1])
         c = args[2]
     return '{} to {} by {};'.format(a, b, c)
 

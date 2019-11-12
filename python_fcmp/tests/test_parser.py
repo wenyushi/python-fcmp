@@ -54,6 +54,29 @@ def back_prop(srcHeight, srcWidth, srcDepth, srcY, Y, weights,
     return
 
 
+@out_args('y_out')
+@cast_array('srcY', 'weights', 'y_out')
+def for_loop(srcHeight, srcWidth, srcDepth, srcY, weights, y_out):
+    margin = 100.0
+    n_feature = int(len(srcY) / 3)
+    ap = 0.0
+    an = 0.0
+    for i in range(n_feature):
+        ap_d = (srcY[i] - srcY[n_feature + i]) ** 2
+        an_d = (srcY[i] - srcY[2 * n_feature + i]) ** 2
+        ap = ap + ap_d
+        an = an + an_d
+    diff = ap - an + margin
+    #     diff = 1.0 + margin
+    if diff > 0.0:
+        y_out[0] = diff
+    else:
+        y_out[0] = 0.0
+    #     y_out[0] = max(diff + margin, 0.0)
+    return y_out[0]
+
+
+
 def cyclic_lr(rate, iterNum, batch, initRate):
     num_batch_per_epoch = 10
     step_size = 10
@@ -99,7 +122,7 @@ def test_python_to_fcmp():
                               '    m = 0;\n'
                               '    a = [1, 2, 3];\n'
                               '    c = a[1];\n'
-                              '    do i = 3 to 10 by 1;\n'
+                              '    do i = 3 to 9 by 1;\n'
                               '        a = i;\n'
                               '    end;\n'
                               '    BAND(n > 0, n eq 0 & 0 eq m & m eq 0);\n'
@@ -130,3 +153,7 @@ def test_decorator():
     @cast_array('a', 'b')
     def dummy_function(a, b):
         b = 10
+
+
+def test_for_loop():
+    code = python_to_fcmp(for_loop, True)

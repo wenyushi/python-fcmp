@@ -4,8 +4,10 @@
     <list default="true" id="4ab35ff9-b80b-484d-a9d8-f12b75c2efa9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.pytest_cache/v/cache/nodeids" beforeDir="false" afterPath="$PROJECT_DIR$/.pytest_cache/v/cache/nodeids" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/test_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/test_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/FCMP_layer_solve_a_quadratic_formula_using_back_propagation.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/examples/FCMP_layer_solve_a_quadratic_formula_using_back_propagation.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/FCMP_learning_rate_policy.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/examples/FCMP_learning_rate_policy.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python_fcmp/function.py" beforeDir="false" afterPath="$PROJECT_DIR$/python_fcmp/function.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python_fcmp/tests/test_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/python_fcmp/tests/test_parser.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,27 +26,29 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
+          <entry key="ipynb" value="2" />
           <entry key="md" value="2" />
-          <entry key="py" value="51" />
+          <entry key="py" value="53" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
+          <entry key="IPNB" value="2" />
           <entry key="Markdown" value="2" />
-          <entry key="Python" value="51" />
+          <entry key="Python" value="53" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="56" />
           <entry key="dummy" value="12" />
-          <entry key="py" value="7747" />
+          <entry key="py" value="7897" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="12" />
-          <entry key="Python" value="7803" />
+          <entry key="Python" value="7953" />
         </counts>
       </usages-collector>
     </session>
@@ -52,10 +56,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/parser.py">
+        <entry file="file://$PROJECT_DIR$/python_fcmp/parser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="469">
-              <caret line="81" selection-start-line="81" selection-end-line="81" />
+            <state relative-caret-position="414">
+              <caret line="251" column="12" selection-start-line="251" selection-start-column="12" selection-end-line="251" selection-end-column="12" />
               <folding>
                 <element signature="e#0#82#0" expanded="true" />
                 <element signature="e#3901#4000#0" />
@@ -66,7 +70,7 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/statement.py">
+        <entry file="file://$PROJECT_DIR$/python_fcmp/statement.py">
           <provider selected="true" editor-type-id="text-editor">
             <state>
               <caret column="29" selection-end-line="1" />
@@ -75,10 +79,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/function.py">
+        <entry file="file://$PROJECT_DIR$/python_fcmp/error.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1180">
-              <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
+            <state relative-caret-position="220">
+              <caret line="11" selection-start-line="11" selection-end-line="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/python_fcmp/function.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="40">
+              <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
               <folding>
                 <element signature="e#0#82#0" expanded="true" />
               </folding>
@@ -87,7 +100,7 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/decorator.py">
+        <entry file="file://$PROJECT_DIR$/python_fcmp/decorator.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="740">
               <caret line="37" column="34" selection-start-line="37" selection-start-column="34" selection-end-line="37" selection-end-column="34" />
@@ -99,7 +112,7 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/operator.py">
+        <entry file="file://$PROJECT_DIR$/python_fcmp/operator.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-64">
               <caret line="56" column="35" selection-start-line="56" selection-start-column="35" selection-end-line="56" selection-end-column="35" />
@@ -107,14 +120,41 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/tests/test_parser.py">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/python_fcmp/tests/test_parser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="16" column="26" lean-forward="true" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
+            <state relative-caret-position="2354">
+              <caret line="125" column="44" selection-start-line="125" selection-start-column="44" selection-end-line="125" selection-end-column="44" />
               <folding>
                 <element signature="e#0#82#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/examples/FCMP_learning_rate_policy.ipynb">
+          <provider selected="true" editor-type-id="ipnb-editor">
+            <state>
+              <selected id="0" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/examples/FCMP_layer_solve_a_quadratic_formula_using_back_propagation.ipynb">
+          <provider selected="true" editor-type-id="ipnb-editor">
+            <state>
+              <selected id="0" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/AppData/Local/Continuum/Anaconda3/Lib/ast.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="65">
+              <caret line="34" selection-start-line="34" selection-end-line="34" />
             </state>
           </provider>
         </entry>
@@ -143,6 +183,7 @@
       <find>end;</find>
       <find>**</find>
       <find>visit_R</find>
+      <find>visit_For</find>
     </findStrings>
     <replaceStrings>
       <replace>operation</replace>
@@ -165,6 +206,10 @@
         <option value="$PROJECT_DIR$/src/decorator.py" />
         <option value="$PROJECT_DIR$/src/parser.py" />
         <option value="$PROJECT_DIR$/src/tests/test_parser.py" />
+        <option value="$PROJECT_DIR$/python_fcmp/parser.py" />
+        <option value="$PROJECT_DIR$/python_fcmp/function.py" />
+        <option value="$PROJECT_DIR$/python_fcmp/tests/test_parser.py" />
+        <option value="$PROJECT_DIR$/examples/FCMP_layer_solve_a_quadratic_formula_using_back_propagation.ipynb" />
       </list>
     </option>
   </component>
@@ -190,12 +235,17 @@
             <path>
               <item name="python-fcmp" type="b2602c69:ProjectViewProjectNode" />
               <item name="python-fcmp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="examples" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="python-fcmp" type="b2602c69:ProjectViewProjectNode" />
               <item name="python-fcmp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="python_fcmp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python-fcmp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python-fcmp" type="462c0819:PsiDirectoryNode" />
+              <item name="python_fcmp" type="462c0819:PsiDirectoryNode" />
               <item name="tests" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -220,8 +270,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.pytest in test_parser.py">
-    <configuration name="pytest for src.tests.test_parser.test_back_prop" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager">
+    <configuration name="pytest for python_fcmp.tests.test_parser.test_back_prop" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="python-fcmp" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -232,11 +282,11 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;src.tests.test_parser.test_back_prop&quot;" />
+      <option name="_new_target" value="&quot;python_fcmp.tests.test_parser.test_back_prop&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for src.tests.test_parser.test_cyclic_lr" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for python_fcmp.tests.test_parser.test_cyclic_lr" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="python-fcmp" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -247,11 +297,11 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;src.tests.test_parser.test_cyclic_lr&quot;" />
+      <option name="_new_target" value="&quot;python_fcmp.tests.test_parser.test_cyclic_lr&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for src.tests.test_parser.test_decorator" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for python_fcmp.tests.test_parser.test_for_loop" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="python-fcmp" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -262,11 +312,11 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;src.tests.test_parser.test_decorator&quot;" />
+      <option name="_new_target" value="&quot;python_fcmp.tests.test_parser.test_for_loop&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for src.tests.test_parser.test_python_to_fcmp" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for python_fcmp.tests.test_parser.test_python_to_fcmp" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="python-fcmp" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -277,7 +327,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;src.tests.test_parser.test_python_to_fcmp&quot;" />
+      <option name="_new_target" value="&quot;python_fcmp.tests.test_parser.test_python_to_fcmp&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -292,24 +342,24 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/src/tests/test_parser.py&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/python_fcmp/tests/test_parser.py&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python tests.pytest for src.tests.test_parser.test_python_to_fcmp" />
-      <item itemvalue="Python tests.pytest for src.tests.test_parser.test_cyclic_lr" />
-      <item itemvalue="Python tests.pytest for src.tests.test_parser.test_back_prop" />
-      <item itemvalue="Python tests.pytest for src.tests.test_parser.test_decorator" />
+      <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_python_to_fcmp" />
+      <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_cyclic_lr" />
+      <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_back_prop" />
       <item itemvalue="Python tests.pytest in test_parser.py" />
+      <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_for_loop" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_python_to_fcmp" />
         <item itemvalue="Python tests.pytest in test_parser.py" />
-        <item itemvalue="Python tests.pytest for src.tests.test_parser.test_back_prop" />
-        <item itemvalue="Python tests.pytest for src.tests.test_parser.test_cyclic_lr" />
-        <item itemvalue="Python tests.pytest for src.tests.test_parser.test_decorator" />
-        <item itemvalue="Python tests.pytest for src.tests.test_parser.test_python_to_fcmp" />
+        <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_for_loop" />
+        <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_back_prop" />
+        <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_cyclic_lr" />
       </list>
     </recent_temporary>
   </component>
@@ -327,53 +377,53 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="pytest_for_src_tests_test_parser_test_back_prop - 2019.11.08 at 14h 06m 12s.xml">
-      <configuration name="pytest for src.tests.test_parser.test_back_prop" configurationId="tests" />
+    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_for_loop - 2019.11.11 at 13h 37m 19s.xml">
+      <configuration name="pytest for python_fcmp.tests.test_parser.test_for_loop" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_src_tests_test_parser_test_cyclic_lr - 2019.11.08 at 14h 06m 42s.xml">
-      <configuration name="pytest for src.tests.test_parser.test_cyclic_lr" configurationId="tests" />
+    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_for_loop - 2019.11.11 at 13h 37m 45s.xml">
+      <configuration name="pytest for python_fcmp.tests.test_parser.test_for_loop" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_src_tests_test_parser_test_cyclic_lr - 2019.11.08 at 14h 07m 56s.xml">
-      <configuration name="pytest for src.tests.test_parser.test_cyclic_lr" configurationId="tests" />
+    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_for_loop - 2019.11.11 at 13h 38m 11s.xml">
+      <configuration name="pytest for python_fcmp.tests.test_parser.test_for_loop" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_src_tests_test_parser_test_cyclic_lr - 2019.11.08 at 14h 08m 07s.xml">
-      <configuration name="pytest for src.tests.test_parser.test_cyclic_lr" configurationId="tests" />
+    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_for_loop - 2019.11.11 at 13h 39m 09s.xml">
+      <configuration name="pytest for python_fcmp.tests.test_parser.test_for_loop" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_src_tests_test_parser_test_cyclic_lr - 2019.11.08 at 14h 08m 19s.xml">
-      <configuration name="pytest for src.tests.test_parser.test_cyclic_lr" configurationId="tests" />
+    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_for_loop - 2019.11.11 at 13h 44m 45s.xml">
+      <configuration name="pytest for python_fcmp.tests.test_parser.test_for_loop" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_src_tests_test_parser_test_cyclic_lr - 2019.11.08 at 14h 10m 01s.xml">
-      <configuration name="pytest for src.tests.test_parser.test_cyclic_lr" configurationId="tests" />
+    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_for_loop - 2019.11.11 at 13h 44m 47s.xml">
+      <configuration name="pytest for python_fcmp.tests.test_parser.test_for_loop" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_src_tests_test_parser_test_back_prop - 2019.11.08 at 14h 10m 40s.xml">
-      <configuration name="pytest for src.tests.test_parser.test_back_prop" configurationId="tests" />
+    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_for_loop - 2019.11.11 at 13h 45m 22s.xml">
+      <configuration name="pytest for python_fcmp.tests.test_parser.test_for_loop" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_src_tests_test_parser_test_back_prop - 2019.11.08 at 14h 12m 26s.xml">
-      <configuration name="pytest for src.tests.test_parser.test_back_prop" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_in_test_parser_py - 2019.11.08 at 14h 12m 34s.xml">
+    <history-entry file="pytest_in_test_parser_py - 2019.11.12 at 10h 01m 06s.xml">
       <configuration name="pytest in test_parser.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_in_test_parser_py - 2019.11.08 at 14h 12m 48s.xml">
-      <configuration name="pytest in test_parser.py" configurationId="tests" />
+    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_python_to_fcmp - 2019.11.12 at 10h 01m 48s.xml">
+      <configuration name="pytest for python_fcmp.tests.test_parser.test_python_to_fcmp" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_python_to_fcmp - 2019.11.12 at 10h 02m 14s.xml">
+      <configuration name="pytest for python_fcmp.tests.test_parser.test_python_to_fcmp" configurationId="tests" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21970496" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.11116965" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.39262474" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.35868332" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.329718" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.60737526" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.37601078" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.29909194" />
+      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.29826465" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.26681128" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -402,6 +452,17 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/python_fcmp/function.py</url>
+          <line>23</line>
+          <option name="timeStamp" value="58" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
@@ -590,13 +651,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/statement.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="29" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="40">
@@ -604,31 +658,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Continuum/Anaconda3/Lib/ast.py">
+    <entry file="file://$PROJECT_DIR$/python_fcmp/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="388">
-          <caret line="252" selection-start-line="252" selection-end-line="252" />
+        <state>
+          <caret column="82" selection-start-column="82" selection-end-column="82" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/function.py">
+    <entry file="file://$PROJECT_DIR$/python_fcmp/statement.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1180">
-          <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#82#0" expanded="true" />
-          </folding>
+        <state>
+          <caret column="29" selection-end-line="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/operator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-64">
-          <caret line="56" column="35" selection-start-line="56" selection-start-column="35" selection-end-line="56" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/decorator.py">
+    <entry file="file://$PROJECT_DIR$/python_fcmp/decorator.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="740">
           <caret line="37" column="34" selection-start-line="37" selection-start-column="34" selection-end-line="37" selection-end-column="34" />
@@ -638,24 +682,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/error.py">
+    <entry file="file://$PROJECT_DIR$/python_fcmp/operator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        <state relative-caret-position="-64">
+          <caret line="56" column="35" selection-start-line="56" selection-start-column="35" selection-end-line="56" selection-end-column="35" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/__init__.py">
+    <entry file="file://$USER_HOME$/AppData/Local/Continuum/Anaconda3/Lib/ast.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="82" selection-start-column="82" selection-end-column="82" />
+        <state relative-caret-position="65">
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/parser.py">
+    <entry file="file://$PROJECT_DIR$/python_fcmp/parser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="469">
-          <caret line="81" selection-start-line="81" selection-end-line="81" />
+        <state relative-caret-position="414">
+          <caret line="251" column="12" selection-start-line="251" selection-start-column="12" selection-end-line="251" selection-end-column="12" />
           <folding>
             <element signature="e#0#82#0" expanded="true" />
             <element signature="e#3901#4000#0" />
@@ -664,13 +708,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/tests/test_parser.py">
+    <entry file="file://$PROJECT_DIR$/python_fcmp/function.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="16" column="26" lean-forward="true" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
+        <state relative-caret-position="40">
+          <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
           <folding>
             <element signature="e#0#82#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python_fcmp/error.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python_fcmp/tests/test_parser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2354">
+          <caret line="125" column="44" selection-start-line="125" selection-start-column="44" selection-end-line="125" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#82#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/FCMP_learning_rate_policy.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/FCMP_layer_solve_a_quadratic_formula_using_back_propagation.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="0" />
         </state>
       </provider>
     </entry>

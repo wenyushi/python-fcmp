@@ -1,7 +1,0 @@
-[
-  "src/tests/test_parser.py::test_parser",
-  "src/tests/test_parser.py::test_cyclic_lr",
-  "src/tests/test_parser.py::test_python_to_fcmp",
-  "src/tests/test_parser.py::test_back_prop",
-  "src/tests/test_parser.py::test_decorator"
-]

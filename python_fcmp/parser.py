@@ -7,9 +7,10 @@ from inspect import getsource
 
 from python_fcmp import operator
 from python_fcmp import function
-from .statement import Stmt
+from .statement import Stmt, FCMPStmt
 from .error import assert_fcmp_error, FCMPParserError
-from .decorator import unsupport_op_order
+from .decorator import unsupport_op_call
+from .fcmp import EXPLICIT_FUNCTION
 
 
 class FCMPParser(ast.NodeVisitor):
@@ -57,13 +58,17 @@ class FCMPParser(ast.NodeVisitor):
         'pow': function.pow_,
         'sum': function.sum_,
         'int': function.int_,
-        'abs': function.abs_
+        'abs': function.abs_,
+        # 'compute': function.compute,
+        # 'reshape': function.reshape,
+        # 'iterator': function.iterator
     }
 
     def __init__(self):
         self.stmts = []
         self._fcmp_prg = None
         self.func_name = None
+        self.variable_dict = dict()
 
     def visit_Module(self, node):
         assert_fcmp_error(len(node.body) == 1, "Only one-function source code will be fed to this parser!")
@@ -104,34 +109,46 @@ class FCMPParser(ast.NodeVisitor):
                           )
 
     def visit_Expr(self, node):
+        ''' add expr statement in stmts list '''
         ret = self.visit(node.value)
-        self.stmts.append(Stmt(ret + ';',
-                               node.lineno,
-                               node.col_offset)
-                          )
+        if type(ret) == str:
+            self.stmts.append(Stmt(ret + ';',
+                                   node.lineno,
+                                   node.col_offset)
+                              )
+        else:
+            self.stmts.append(ret)
 
     def visit_Assign(self, node):
+        ''' add expr statement in stmts list '''
         # assign which concatenate all string together
         rhs = self.visit(node.value)
         assert_fcmp_error(len(node.targets) == 1, "So far only one valued assignment is supported!")
         lhs = node.targets[0]
         lhs = self.visit(lhs)
-        stmt = Stmt('{} = {};'.format(lhs, rhs),
-                    node.lineno,
-                    node.col_offset
-                    )
-        self.stmts.append(stmt)
+        # check rhs type
+        if type(rhs) is not FCMPStmt:
+            self.stmts.append(Stmt('{} = {};'.format(lhs, rhs),
+                                   node.lineno,
+                                   node.col_offset
+                                   ))
+        else:
+            rhs.ret = lhs
+            self.variable_dict[lhs] = rhs
+            rhs.lineno = node.lineno
+            rhs.col_offset = node.col_offset
+            self.stmts.append(rhs)
 
     def visit_Name(self, node):
         return node.id
 
-    @unsupport_op_order
+    @unsupport_op_call
     def visit_BinOp(self, node):
         lhs = self.visit(node.left)
         rhs = self.visit(node.right)
         return FCMPParser._binop_maker[type(node.op)](lhs, rhs)
 
-    @unsupport_op_order
+    @unsupport_op_call
     def visit_UnaryOp(self, node):
         operand = self.visit(node.operand)
         return FCMPParser._unaryop_maker[type(node.op)](operand)
@@ -191,7 +208,7 @@ class FCMPParser(ast.NodeVisitor):
                                        )
                                   )
 
-    @unsupport_op_order
+    @unsupport_op_call
     def visit_Compare(self, node):
         ops = [self.visit(node.left)]
         ops += [self.visit(i) for i in node.comparators]
@@ -214,7 +231,7 @@ class FCMPParser(ast.NodeVisitor):
                     node.col_offset
                     )
 
-    @unsupport_op_order
+    @unsupport_op_call
     def visit_BoolOp(self, node):
         # n = len(node.values)
         # if n == 1:
@@ -241,27 +258,63 @@ class FCMPParser(ast.NodeVisitor):
         # should return a string
         args = self.visit(node.slice)
         arr = self.visit(node.value)
-        return '{}[{}]'.format(arr, args)
+        if isinstance(args, list):
+            if arr in self.variable_dict:
+                # get the variable's shape which is added into self.variable_dict via fcmp.reshape function
+                t_dims = self.variable_dict[arr].args[1]
+                # convert multi-dims access to one dimension subscript
+                one_dim_subscript = ''
+                for i, d in enumerate(t_dims[1:]):
+                    if i == 0:
+                        one_dim_subscript = operator.mul(d, '({})'.format(args[i]))
+                    else:
+                        one_dim_subscript = operator.add(one_dim_subscript, operator.mul(d, '({})'.format(args[i])))
+                one_dim_subscript = operator.add(one_dim_subscript, args[-1])
+                return '{}[{}]'.format(arr, one_dim_subscript)
+            else:
+                raise FCMPParserError("Please first reshape {} "
+                                      "and then access the elements of it like multiple dimensions".format(arr))
+                # return '{}[{}]'.format(arr, ', '.join(args))
+        else:
+            return '{}[{}]'.format(arr, args)
 
     def visit_Index(self, node):
-        if isinstance(node.value, ast.Tuple):
-            # return self.visit(node.value)
-            raise FCMPParserError("Multiple index doesn't support")
+        # if isinstance(node.value, ast.Tuple):
+        #     # return self.visit(node.value)
+        #     raise FCMPParserError("Multiple index doesn't support")
         # FCMP index starting from 1
-        ret = self.visit(node.value)
-        try:
-            return str(int(ret) + 1)
-        except ValueError:
-            return '{} + {}'.format(ret, '1')
+        idx = self.visit(node.value)
+        if not isinstance(node.value, ast.Tuple):
+            idx = [idx]
+        ret = []
+        for i in range(len(idx)):
+            try:
+                ret.append(str(int(idx[i]) + 1))
+            except ValueError:
+                ret.append('{} + {}'.format(idx[i], '1'))
+        return ret[0] if len(ret) == 1 else ret
 
-    @unsupport_op_order
+    @unsupport_op_call
     def visit_Call(self, node):
-        # Yet, no function pointer supported
-        assert_fcmp_error(isinstance(node.func, ast.Name),
-                          "Only id-function function call is supported so far!")
-        func_id = node.func.id
-        args = [self.visit(i) for i in node.args]
-        return FCMPParser._callop_maker[func_id](args)  # 1 to 10
+        # Only support fcmp function pointer
+        if isinstance(node.func, ast.Attribute):
+            f_name = self.visit(node.func)
+            args = [self.visit(i) for i in node.args]
+            # remap variable
+            tmp_args = []
+            for arg in args:
+                if arg in self.variable_dict:
+                    tmp_args.append(tuple((arg, self.variable_dict[arg])))
+                else:
+                    tmp_args.append(arg)
+            # return FCMPStmt which store rich info
+            return FCMPStmt(f_name, tmp_args, None, node.lineno, node.col_offset)
+        else:  # non function pointer call
+            assert_fcmp_error(isinstance(node.func, ast.Name),
+                              "Only id-function function or FCMP call is supported so far!")
+            func_id = node.func.id
+            args = [self.visit(i) for i in node.args]
+            return FCMPParser._callop_maker[func_id](args)  # return a string
 
     def visit_For(self, node):
         # for i in range() or for i in list/array
@@ -279,7 +332,7 @@ class FCMPParser(ast.NodeVisitor):
 
         for i in range(len(node.body)):
             self.visit(node.body[i])
-
+        # for end statement
         self.stmts.append(Stmt('end;',
                                -1,
                                node.col_offset
@@ -293,6 +346,32 @@ class FCMPParser(ast.NodeVisitor):
                                node.col_offset
                                )
                           )
+
+    def visit_Attribute(self, node):
+        buf = self.visit(node.value)
+        assert_fcmp_error(buf == 'fcmp',
+                          "Only FCMP call is supported so far!")
+
+        return node.attr  # return fcmp function name
+
+    def visit_Lambda(self, node):
+        ''' should we return or grab something from other node parameters '''
+        _attr = 'id' if sys.version_info[0] < 3 else 'arg'  # To make py2 and 3 compatible
+        args = [getattr(arg, _attr) for arg in node.args.args]  # put into body as variables
+        # below should be put into iteration body
+        # eg # lhs = fcmp.compute((shape,), lambda i: fcmp.sum(A[i, k], axis=k)
+        # do i = 0 to shape by 1;
+        #   do k_i = 0 to k by 1;
+        #       lhs[i] = lhs[i] + A[i, k_i]
+        # lambda doesn't need shape
+        # ret = []  # what should be stored, string or FCMPStmt
+        # for i in range(len(node.body)):
+        #     ret.append(self.visit(node.body[i]))
+        return self.visit(node.body)
+
+    def visit_Tuple(self, node):
+        return tuple(self.visit(i) for i in node.elts)
+
     @property
     def fcmp_prg(self):
         # self.stmts = sorted(self.stmts)
@@ -300,6 +379,9 @@ class FCMPParser(ast.NodeVisitor):
         pre_lineno = self.stmts[0].lineno
         pre_col_offset = self.stmts[0].col_offset
         for stmt in self.stmts:
+            if type(stmt) is FCMPStmt:
+                if stmt.func not in EXPLICIT_FUNCTION:
+                    continue
             # current line number that is the same as prior line number will append statement after prior statement
             if stmt.lineno == pre_lineno and stmt.col_offset <= pre_col_offset:
                 self._fcmp_prg = self._fcmp_prg[:-1] + stmt.prg + '\n'
@@ -357,5 +439,5 @@ def register_fcmp_routines(conn, routine_code, function_tbl_name):
     if not conn.has_actionset('fcmpact'):
         conn.loadactionset(actionSet = 'fcmpact', _messagelevel = 'error')
     conn.addRoutines(routineCode=routine_code, package = 'pkg', saveTable=1,
-                     funcTable=dict(name=function_tbl_name, caslib="casuser", replace=1))
+                     funcTable=dict(name=function_tbl_name, replace=1))
 

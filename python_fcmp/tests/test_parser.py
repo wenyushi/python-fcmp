@@ -5,6 +5,7 @@ import ast
 from ..parser import FCMPParser, python_to_fcmp
 from ..decorator import *
 from ..error import assert_fcmp_error
+from python_fcmp import fcmp
 
 source = \
 '''
@@ -74,7 +75,6 @@ def for_loop(srcHeight, srcWidth, srcDepth, srcY, weights, y_out):
         y_out[0] = 0.0
     #     y_out[0] = max(diff + margin, 0.0)
     return y_out[0]
-
 
 
 def cyclic_lr(rate, iterNum, batch, initRate):
@@ -157,3 +157,39 @@ def test_decorator():
 
 def test_for_loop():
     code = python_to_fcmp(for_loop, True)
+
+
+def code_fcmp_func():
+    shape = 20
+    A = 1
+    A = fcmp.reshape(A, (20, 10))
+    k = fcmp.reduce_axis((0, 10))
+    lhs = fcmp.compute((shape,), lambda i: fcmp.sum(A[i, k], k))
+
+
+def test_fcmp_function():
+    code = python_to_fcmp(code_fcmp_func, True)
+
+
+@out_args('y_out')  # pass by reference
+@cast_array('srcY', 'weights', 'y_out')  # declare the arguments as array type
+def compute_forward(srcHeight, srcWidth, srcDepth, srcY, weights, y_out):
+    margin = 2.0
+    n_feature = int(srcWidth / 3)
+    ap = 0.0
+    an = 0.0
+    k = fcmp.reduce_axis((0, n_feature))
+    ap = fcmp.compute((1,), lambda: fcmp.sum((srcY[k] - srcY[n_feature + k]) ** 2, k))
+    an = fcmp.compute((1,), lambda: fcmp.sum((srcY[k] - srcY[2 * n_feature + k]) ** 2, k))
+    # for i in range(n_feature):
+    #     ap = ap + (srcY[i] - srcY[n_feature + i]) ** 2
+    #     an = an + (srcY[i] - srcY[2 * n_feature + i]) ** 2
+    ap = ap ** 0.5
+    an = an ** 0.5
+    diff = ap - an + margin
+    y_out[0] = max(diff, 0.0)
+    return y_out[0]
+
+
+def test_compute():
+    code = python_to_fcmp(compute_forward, True)

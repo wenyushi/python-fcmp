@@ -401,13 +401,16 @@ class FCMPParser(ast.NodeVisitor):
                 self._fcmp_prg = self._fcmp_prg[:-1] + stmt.prg + '\n'
             else:
                 self._fcmp_prg += ' ' * stmt.col_offset
-                self._fcmp_prg += stmt.prg
+                code = stmt.prg
+                if code.count('\n') > 1:
+                    code = code.replace('\n', '\n' + ' ' * stmt.col_offset)[: -len(' ' * stmt.col_offset)]
+                self._fcmp_prg += code
                 self._fcmp_prg += '\n'
                 pre_lineno = stmt.lineno
         return self._fcmp_prg
 
     def pretty_print(self):
-        pprint(self.fcmp_prg)
+        pprint(self.fcmp_prg, width=200)
 
 
 def python_to_fcmp(func, print=False):

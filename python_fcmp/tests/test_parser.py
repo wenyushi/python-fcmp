@@ -107,10 +107,10 @@ def test_cyclic_lr():
                               '    num_batch_per_epoch = 10;\n'
                               '    step_size = 10;\n'
                               '    max_lr = 0.01;\n'
-                              '    batch_cum = (num_batch_per_epoch * iterNum + batch);\n'
-                              '    cycle = int((batch_cum / 2 * step_size + 1));\n'
-                              '    x = abs(((batch_cum / step_size - 2 * cycle) + 1));\n'
-                              '    rate = (initRate + (max_lr - initRate) * max(0, (1 - x)));\n'
+                              '    batch_cum = ((num_batch_per_epoch * iterNum) + batch);\n'
+                              '    cycle = int(((batch_cum / (2 * step_size)) + 1));\n'
+                              '    x = abs((((batch_cum / step_size) - (2 * cycle)) + 1));\n'
+                              '    rate = (initRate + ((max_lr - initRate) * max(0, (1 - x))));\n'
                               '    return (rate);\n'
                               'endsub;\n', "")
 
@@ -127,7 +127,7 @@ def test_python_to_fcmp():
                               '    end;\n'
                               '    BAND(n > 0, n eq 0 & 0 eq m & m eq 0);\n'
                               '    if n <= 0 & m > 0 then do;\n'
-                              '        n = ((n + 1 * 4) - 121);\n'
+                              '        n = ((n + (1 * 4)) - 121);\n'
                               '    end;\n'
                               '    else \n'
                               '         if m eq 0 then do;\n'
@@ -142,9 +142,9 @@ def test_python_to_fcmp():
 def test_back_prop():
     code = python_to_fcmp(back_prop, True)
     assert_fcmp_error(code == 'function back_prop(srcHeight, srcWidth, srcDepth, srcY[*], Y[*], weights[*], deltas[*], gradient_out[*], srcDeltas_out[*]);outargs gradient_out, srcDeltas_out;\n' \
-                              '    gradient_out[1] = deltas[1] * srcY[1] ** 2;\n'
+                              '    gradient_out[1] = (deltas[1] * srcY[1] ** 2);\n'
                               '    gradient_out[2] = deltas[1];\n' \
-                              '    srcDeltas_out[1] = deltas[1] * (2 * weights[1] * srcY[1] + weights[2]);\n' \
+                              '    srcDeltas_out[1] = (deltas[1] * (((2 * weights[1]) * srcY[1]) + weights[2]));\n' \
                               '    return ;\n'
                               'endsub;\n', "")
 

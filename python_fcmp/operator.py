@@ -74,7 +74,7 @@ def mod(a, b):
 
 def mul(a, b):
     "Same as a * b."
-    return '{} * {}'.format(a, b)
+    return '({} * {})'.format(a, b)
 
 def neg(a):
     "Same as -a."
@@ -103,7 +103,7 @@ def sub(a, b):
 
 def truediv(a, b):
     "Same as a / b."
-    return '{} / {}'.format(a, b)
+    return '({} / {})'.format(a, b)
 
 
 def xor(a, b):

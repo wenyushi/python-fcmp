@@ -39,13 +39,18 @@ def compute(out_dims, fcompute, ret=None):
         code += 'do {} = 1 to {};\n'.format(RECURSION_INDEX[dim], out_dims[dim])
     # compute core
     if isinstance(fcompute, str):
-        code = code + (n_dims * 4 * ' ') + ret + ' = ' + fcompute
+        code = code + (n_dims * 4 * ' ') + ret + ' = ' + fcompute + ';\n'
     else:
         fcompute.ret = ret  # A -> A[i, j]
-        code = code + (n_dims * 4 * ' ') + fcompute.prg
+        # indent correct
+        snippet = fcompute.prg
+        if snippet.count('\n') > 1:
+            snippet = snippet.replace('\n', '\n' + ' ' * n_dims * 4)[: -len(' ' * n_dims * 4)]
+        # compute core
+        code = code + (n_dims * 4 * ' ') + snippet
     # loop end code
-    for dim in range(n_dims, 0, -1):
-        code += 4 * dim * ' '  # indent
+    for dim in range(1 - n_dims, 1, 1):
+        code += 4 * -dim * ' '  # indent
         code += 'end;\n'
     return code
     # code = 'do {} = 0 to {} by 1;\n' \
@@ -74,11 +79,11 @@ def sum(a, axis, ret=None):
 
     code = code + (4 * len(axis) * ' ') + ret + ' = ' + operator.add(ret, a) + ';\n'
 
-    for i in range(len(axis), 0, -1):
-        code = code + (4 * i * ' ') + 'end;\n'
+    for i in range(1 - len(axis), 1, 1):
+        code = code + (4 * -i * ' ') + 'end;\n'
     return code
 
 
 def reduce_axis(a, ret=None):
     # return 'do ' + function.range(a) + '\n'
-    return 'do {} = {};\n'.format(ret, function.range(a))
+    return 'do {} = {}\n'.format(ret, function.range(a))

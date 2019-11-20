@@ -68,7 +68,7 @@ class FCMPParser(ast.NodeVisitor):
         self.stmts = []
         self._fcmp_prg = None
         self.func_name = None
-        self.variable_dict = dict()
+        self.variable_dict = dict()  # the dict stores fcmp variable and value
 
     def visit_Module(self, node):
         assert_fcmp_error(len(node.body) == 1, "Only one-function source code will be fed to this parser!")
@@ -299,16 +299,31 @@ class FCMPParser(ast.NodeVisitor):
         # Only support fcmp function pointer
         if isinstance(node.func, ast.Attribute):
             f_name = self.visit(node.func)
-            args = [self.visit(i) for i in node.args]
-            # remap variable
-            tmp_args = []
-            for arg in args:
-                if arg in self.variable_dict:
-                    tmp_args.append(tuple((arg, self.variable_dict[arg])))
+            args = []
+            for n in node.args:
+                # check if there are any fcmp function variable in the node.args
+                # if the arg is a list
+                if type(n) == ast.List:
+                    arg = self.visit(n)  # string
+                    arg = arg[1:-1].split(', ')
+                    # remap variable
+                    tmp = []
+                    for a in arg:
+                        if a in self.variable_dict:
+                            tmp.append(tuple((a, self.variable_dict[a])))
+                        else:
+                            tmp.append(a)
+                    args.append(tmp)
+                # if the arg is a variable
                 else:
-                    tmp_args.append(arg)
+                    arg = self.visit(n)
+                    if arg in self.variable_dict:
+                        args.append(tuple((arg, self.variable_dict[arg])))
+                    else:
+                        args.append(arg)
+
             # return FCMPStmt which store rich info
-            return FCMPStmt(f_name, tmp_args, None, node.lineno, node.col_offset)
+            return FCMPStmt(f_name, args, None, node.lineno, node.col_offset)
         else:  # non function pointer call
             assert_fcmp_error(isinstance(node.func, ast.Name),
                               "Only id-function function or FCMP call is supported so far!")
@@ -355,7 +370,6 @@ class FCMPParser(ast.NodeVisitor):
         return node.attr  # return fcmp function name
 
     def visit_Lambda(self, node):
-        ''' should we return or grab something from other node parameters '''
         _attr = 'id' if sys.version_info[0] < 3 else 'arg'  # To make py2 and 3 compatible
         args = [getattr(arg, _attr) for arg in node.args.args]  # put into body as variables
         # below should be put into iteration body

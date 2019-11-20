@@ -35,10 +35,14 @@ class FCMPStmt(Stmt):
         self.ret = ret
         self.lineno = lineno
         self.col_offset = col_offset
+        self._prg = None
 
     @property
     def prg(self):
-        return getattr(fcmp, self.func)(*self.args, self.ret)
+        if self._prg is not None:
+            return self._prg
+        self._prg = getattr(fcmp, self.func)(*self.args, self.ret)
+        return self._prg
 
     def __str__(self):
         return self.prg

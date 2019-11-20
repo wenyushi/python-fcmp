@@ -180,7 +180,7 @@ def compute_forward(srcHeight, srcWidth, srcDepth, srcY, weights, y_out):
     an = 0.0
     k = fcmp.reduce_axis((0, n_feature))
     ap = fcmp.compute((1,), lambda: fcmp.sum((srcY[k] - srcY[n_feature + k]) ** 2, k))
-    an = fcmp.compute((1,), lambda: fcmp.sum((srcY[k] - srcY[2 * n_feature + k]) ** 2, k))
+    # an = fcmp.compute((1,), lambda: fcmp.sum((srcY[k] - srcY[2 * n_feature + k]) ** 2, k))
     # for i in range(n_feature):
     #     ap = ap + (srcY[i] - srcY[n_feature + i]) ** 2
     #     an = an + (srcY[i] - srcY[2 * n_feature + i]) ** 2
@@ -193,3 +193,20 @@ def compute_forward(srcHeight, srcWidth, srcDepth, srcY, weights, y_out):
 
 def test_compute():
     code = python_to_fcmp(compute_forward, True)
+
+
+@out_args('y_out')  # pass by reference
+@cast_array('srcY', 'weights', 'y_out')  # declare the arguments as array type
+def compute_forward2(srcHeight, srcWidth, srcDepth, srcY, weights, y_out):
+    wd = fcmp.reduce_axis((0, srcWidth))
+    ht = fcmp.reduce_axis((0, srcHeight))
+    eps = 0.000001
+    srcY = fcmp.reshape(srcY, (srcDepth, srcHeight, srcWidth))
+    mean = fcmp.compute((srcDepth), lambda i: fcmp.sum(srcY[i, ht, wd] / srcHeight / srcWidth, [ht, wd]))
+    var = fcmp.compute((srcDepth), lambda i: fcmp.sum((srcY[i, ht, wd] - mean[i]) ** 2 / srcHeight / srcWidth, [ht, wd]))
+    y_out = fcmp.compute((srcDepth, srcHeight, srcWidth), lambda i, j, m:
+                         (srcY[i, j, m] - mean[m]) / (var[m] + eps) ** 0.5)
+    return y_out[0]
+
+def test_compute2():
+    code = python_to_fcmp(compute_forward2, True)

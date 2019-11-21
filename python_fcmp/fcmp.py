@@ -2,12 +2,11 @@ from __future__ import print_function, division, absolute_import, unicode_litera
 
 from .error import assert_fcmp_error
 from python_fcmp import operator
-from python_fcmp import function
-# from python_fcmp.parser import LAMBDA_EMPTY_ARGS
+from .statement import FCMPStmt
 
 RECURSION_INDEX = ['i', 'j', 'm', 'n']
 EXPLICIT_FUNCTION = ['compute']  # the function will explicitly present in FCMP code
-LAMBDA_EMPTY_ARGS = ['0']
+
 
 def compute(ret, out_dims, fcompute):
     """
@@ -27,16 +26,16 @@ def compute(ret, out_dims, fcompute):
     :class:`string`
 
     """
-    # fcompute should be fcmpstmt(lambda function) or string
-    # assert_fcmp_error(type(fcompute) == FCMPStmt, "fcompute should be a lambda function type.")
+    # fcompute should be fcmpstmt(lambda function)
+    assert_fcmp_error(type(fcompute) == FCMPStmt, "fcompute should be a lambda function type.")
     n_dims = len(out_dims)
     if isinstance(out_dims, str):
         n_dims = 1
         out_dims = [out_dims]
     lambda_args = fcompute.args[0]
 
-    # assert_fcmp_error(n_dims == len(fcompute.args) - 1,
-    #                   "The length of out_dims should be the same as the number of arguments in lambda function.")
+    assert_fcmp_error(n_dims == len(lambda_args),
+                      "The length of out_dims should be the same as the number of arguments in lambda function.")
     # assign to
     # convert multi-dims access to one dimension subscript
     one_dim_subscript = ''
@@ -45,9 +44,9 @@ def compute(ret, out_dims, fcompute):
     else:
         for i, d in enumerate(out_dims[1:]):
             if i == 0:
-                one_dim_subscript = operator.mul(d, '({})'.format(lambda_args[i]))
+                one_dim_subscript = operator.mul(d, '{}'.format(lambda_args[i]))
             else:
-                one_dim_subscript = operator.add(one_dim_subscript, operator.mul(d, '({})'.format(lambda_args[i])))
+                one_dim_subscript = operator.add(one_dim_subscript, operator.mul(d, '{}'.format(lambda_args[i])))
         one_dim_subscript = operator.add(one_dim_subscript, lambda_args[n_dims - 1])
     ret = ret + '[{}]'.format(one_dim_subscript)  # A -> A[i * height + j]
 
@@ -89,6 +88,7 @@ def lambda_(ret, *args):
 
 
 def reshape(ret, a, shape):
+    """ reshape doesn't present in fcmp code; it mainly uses for register fcmp variable. """
     shape = [str(i) for i in shape]
     return 'call dynamic_array({}, {});'.format(a, ', '.join(shape))
 
@@ -126,6 +126,7 @@ def sum(ret, lambda_a, a, axis):
         # correct indices eg. a[srcHeight * (hw + 1) + (wh + 1)] -> a[srcHeight * hw + wh]
         a = a.replace(operator.add(ax[0], 1), ax[0])
         a = a.replace(ax[0] + '1', ax[0])
+    from python_fcmp.parser import LAMBDA_EMPTY_ARGS
     if lambda_a != LAMBDA_EMPTY_ARGS:
         for l_a in lambda_a:
             a = a.replace(operator.add(l_a, 1), l_a)

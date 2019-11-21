@@ -204,8 +204,8 @@ def compute_forward2(srcHeight, srcWidth, srcDepth, srcY, weights, y_out):
     mean = 0
     var = 0
     srcY = fcmp.reshape(srcY, (srcDepth, srcHeight, srcWidth))
-    mean = fcmp.compute((srcDepth), lambda i, j: fcmp.sum(srcY[i, ht, wd] / srcHeight / srcWidth, [ht, wd]))
-    var = fcmp.compute((srcDepth), lambda i, j: fcmp.sum((srcY[i, ht, wd] - mean[i]) ** 2 / srcHeight / srcWidth, [ht, wd]))
+    mean = fcmp.compute((srcDepth), lambda i: fcmp.sum(srcY[i, ht, wd] / srcHeight / srcWidth, [ht, wd]))
+    var = fcmp.compute((srcDepth), lambda i: fcmp.sum((srcY[i, ht, wd] - mean[i]) ** 2 / srcHeight / srcWidth, [ht, wd]))
     y_out = fcmp.compute((srcDepth, srcHeight, srcWidth), lambda h, a, p:
                          (srcY[h, a, p] - mean[p]) / (var[p] + eps) ** 0.5)
     return y_out[0]

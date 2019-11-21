@@ -3,41 +3,61 @@ from __future__ import print_function, division, absolute_import, unicode_litera
 from .error import assert_fcmp_error
 from python_fcmp import operator
 from python_fcmp import function
+# from python_fcmp.parser import LAMBDA_EMPTY_ARGS
 
 RECURSION_INDEX = ['i', 'j', 'm', 'n']
 EXPLICIT_FUNCTION = ['compute']  # the function will explicitly present in FCMP code
+LAMBDA_EMPTY_ARGS = ['0']
 
+def compute(ret, out_dims, fcompute):
+    """
+    Construct a new array by computing over the shape domain.
 
-def compute(out_dims, fcompute, ret=None):
-    # fcompute should be fcmpstmt or string
+    Parameters
+    ----------
+    ret : string
+        Specifies the return variable of the FCMP function
+    out_dims : tuple
+        Specifies the shape of the generated array.
+    fcompute : FCMPStmt
+        Specifies the input source expression.
+
+    Returns
+    -------
+    :class:`string`
+
+    """
+    # fcompute should be fcmpstmt(lambda function) or string
     # assert_fcmp_error(type(fcompute) == FCMPStmt, "fcompute should be a lambda function type.")
     n_dims = len(out_dims)
     if isinstance(out_dims, str):
         n_dims = 1
         out_dims = [out_dims]
+    lambda_args = fcompute.args[0]
 
-    assert_fcmp_error(n_dims <= len(RECURSION_INDEX), "The length of out_dims "
-                                                        "cannot be greater than {}.".format(len(RECURSION_INDEX)))
+    # assert_fcmp_error(n_dims == len(fcompute.args) - 1,
+    #                   "The length of out_dims should be the same as the number of arguments in lambda function.")
     # assign to
     # convert multi-dims access to one dimension subscript
     one_dim_subscript = ''
     if n_dims == 1:
-        one_dim_subscript = 'i'
+        one_dim_subscript = lambda_args[0]
     else:
         for i, d in enumerate(out_dims[1:]):
             if i == 0:
-                one_dim_subscript = operator.mul(d, '({})'.format(RECURSION_INDEX[i]))
+                one_dim_subscript = operator.mul(d, '({})'.format(lambda_args[i]))
             else:
-                one_dim_subscript = operator.add(one_dim_subscript, operator.mul(d, '({})'.format(RECURSION_INDEX[i])))
-        one_dim_subscript = operator.add(one_dim_subscript, RECURSION_INDEX[-1])
+                one_dim_subscript = operator.add(one_dim_subscript, operator.mul(d, '({})'.format(lambda_args[i])))
+        one_dim_subscript = operator.add(one_dim_subscript, lambda_args[n_dims - 1])
     ret = ret + '[{}]'.format(one_dim_subscript)  # A -> A[i * height + j]
 
     code = ''
     # out_dims loops
     for dim in range(n_dims):
         code += 4 * dim * ' '  # indent
-        code += 'do {} = 1 to {};\n'.format(RECURSION_INDEX[dim], out_dims[dim])
-    # compute core
+        code += 'do {} = 1 to {};\n'.format(lambda_args[dim], out_dims[dim])
+
+    # compute core we can remove str check
     if isinstance(fcompute, str):
         code = code + (n_dims * 4 * ' ') + ret + ' = ' + fcompute + ';\n'
     else:
@@ -59,12 +79,38 @@ def compute(out_dims, fcompute, ret=None):
     # return np.fromfunction(fcompute, shape, dtype = float)
 
 
-def reshape(a, shape, ret=None):
+def lambda_(ret, *args):
+    """ for args, the last item is lambda function, the first few are lambda arguments"""
+    func_core = args[-1]
+    for arg in args[0]:
+        func_core = func_core.replace(operator.add(arg, 1), arg)
+        func_core = func_core.replace('{} + 1'.format(arg), arg)
+    return ret + ' = ' + func_core + ';\n'
+
+
+def reshape(ret, a, shape):
     shape = [str(i) for i in shape]
     return 'call dynamic_array({}, {});'.format(a, ', '.join(shape))
 
 
-def sum(a, axis, ret=None):
+def sum(ret, lambda_a, a, axis):
+    """
+    Sum of array elements over a given axis or a list of axes
+
+    Parameters
+    ----------
+    ret : string
+        Specifies the return variable of the FCMP function.
+    a : string
+        Summation function.
+    axis FCMPStmt or list of FCMPStmt
+        Axis or axes along which a sum is performed.
+
+    Returns
+    -------
+    :class:`string`
+
+    """
     # axis is a list
     # below should be put into iteration body
     # eg # lhs = fcmp.compute((shape,), lambda i: fcmp.sum(A[i, k], axis=k)
@@ -74,16 +120,49 @@ def sum(a, axis, ret=None):
     code = ''
     if not isinstance(axis, list):
         axis = [axis]
+    # loop header
     for i, ax in enumerate(axis):
         code = code + (4 * i * ' ') + ax[1].prg
-
+        # correct indices eg. a[srcHeight * (hw + 1) + (wh + 1)] -> a[srcHeight * hw + wh]
+        a = a.replace(operator.add(ax[0], 1), ax[0])
+        a = a.replace(ax[0] + '1', ax[0])
+    if lambda_a != LAMBDA_EMPTY_ARGS:
+        for l_a in lambda_a:
+            a = a.replace(operator.add(l_a, 1), l_a)
+            a = a.replace(l_a + '1', l_a)
+    # summation body
     code = code + (4 * len(axis) * ' ') + ret + ' = ' + operator.add(ret, a) + ';\n'
-
+    # loop end
     for i in range(1 - len(axis), 1, 1):
         code = code + (4 * -i * ' ') + 'end;\n'
     return code
 
 
-def reduce_axis(a, ret=None):
-    # return 'do ' + function.range(a) + '\n'
-    return 'do {} = {}\n'.format(ret, function.range(a))
+def reduce_axis(ret, a):
+    """
+    Create an iterator for reduction.
+
+    Parameters
+    ----------
+    ret : string
+        Specifies the return variable of the FCMP function
+    a : tuple
+        Specifies the iteration range
+
+    Returns
+    -------
+    :class:`string`
+
+    """
+    # reduce_axis((0, 10)) python 0~9; fcmp 1~10
+    if len(a) == 1:
+        start = 1
+        end = a[0]
+    elif len(a) == 2:
+        try:
+            start = str(int(a[0]) + 1)
+        except ValueError:
+            start = '{} + 1'.format(a[0])
+        end = a[1]
+    return 'do {} = {} to {} by {};\n'.format(ret, start, end, 1)
+

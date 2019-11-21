@@ -41,7 +41,7 @@ class FCMPStmt(Stmt):
     def prg(self):
         if self._prg is not None:
             return self._prg
-        self._prg = getattr(fcmp, self.func)(*self.args, self.ret)
+        self._prg = getattr(fcmp, self.func)(self.ret, *self.args)
         return self._prg
 
     def __str__(self):

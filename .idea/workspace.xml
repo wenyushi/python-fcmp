@@ -4,8 +4,8 @@
     <list default="true" id="4ab35ff9-b80b-484d-a9d8-f12b75c2efa9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/python_fcmp/fcmp.py" beforeDir="false" afterPath="$PROJECT_DIR$/python_fcmp/fcmp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/python_fcmp/operator.py" beforeDir="false" afterPath="$PROJECT_DIR$/python_fcmp/operator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/python_fcmp/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/python_fcmp/parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python_fcmp/statement.py" beforeDir="false" afterPath="$PROJECT_DIR$/python_fcmp/statement.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/python_fcmp/tests/test_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/python_fcmp/tests/test_parser.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -27,38 +27,38 @@
         <counts>
           <entry key="ipynb" value="3" />
           <entry key="md" value="2" />
-          <entry key="py" value="94" />
+          <entry key="py" value="110" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="IPNB" value="3" />
           <entry key="Markdown" value="2" />
-          <entry key="Python" value="94" />
+          <entry key="Python" value="110" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="199" />
           <entry key="dummy" value="26" />
-          <entry key="py" value="14236" />
+          <entry key="py" value="16560" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="26" />
-          <entry key="Python" value="14435" />
+          <entry key="Python" value="16759" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/python_fcmp/parser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="583">
-              <caret line="405" column="106" selection-start-line="403" selection-start-column="16" selection-end-line="405" selection-end-column="106" />
+            <state relative-caret-position="400">
+              <caret line="20" column="30" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
               <folding>
                 <element signature="e#0#82#0" expanded="true" />
                 <element signature="e#497#991#0" />
@@ -70,8 +70,19 @@
                 <element signature="e#4115#6053#0" />
                 <element signature="e#5909#6624#0" />
                 <element signature="e#6496#6961#0" />
-                <element signature="e#9963#10520#0" />
                 <element signature="e#11456#12017#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/python_fcmp/tests/test_parser.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="763">
+              <caret line="207" column="46" selection-start-line="207" selection-start-column="46" selection-end-line="207" selection-end-column="46" />
+              <folding>
+                <element signature="e#0#82#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -80,8 +91,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/python_fcmp/statement.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="700">
-              <caret line="35" column="28" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="28" />
+            <state relative-caret-position="703">
+              <caret line="43" selection-start-line="43" selection-end-line="43" />
               <folding>
                 <element signature="e#0#82#0" expanded="true" />
               </folding>
@@ -92,32 +103,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/python_fcmp/fcmp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="37" column="39" selection-start-line="37" selection-start-column="39" selection-end-line="37" selection-end-column="39" />
+            <state relative-caret-position="200">
+              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
               <folding>
                 <element signature="e#0#82#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/python_fcmp/tests/test_parser.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="179" column="12" lean-forward="true" selection-start-line="179" selection-start-column="12" selection-end-line="179" selection-end-column="12" />
-              <folding>
-                <element signature="e#0#82#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/python_fcmp/operator.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1745">
-              <caret line="88" column="14" selection-start-line="88" selection-start-column="14" selection-end-line="88" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -157,6 +147,9 @@
       <find>FCMPStmt</find>
       <find>self.vari</find>
       <find>_i</find>
+      <find>mul</find>
+      <find>format</find>
+      <find>do</find>
     </findStrings>
     <replaceStrings>
       <replace>operation</replace>
@@ -186,11 +179,11 @@
         <option value="$PROJECT_DIR$/python_fcmp/function.py" />
         <option value="$PROJECT_DIR$/python_fcmp/fcmp_function.py" />
         <option value="$PROJECT_DIR$/python_fcmp/__init__.py" />
-        <option value="$PROJECT_DIR$/python_fcmp/statement.py" />
-        <option value="$PROJECT_DIR$/python_fcmp/parser.py" />
-        <option value="$PROJECT_DIR$/python_fcmp/fcmp.py" />
         <option value="$PROJECT_DIR$/python_fcmp/operator.py" />
+        <option value="$PROJECT_DIR$/python_fcmp/statement.py" />
         <option value="$PROJECT_DIR$/python_fcmp/tests/test_parser.py" />
+        <option value="$PROJECT_DIR$/python_fcmp/fcmp.py" />
+        <option value="$PROJECT_DIR$/python_fcmp/parser.py" />
       </list>
     </option>
   </component>
@@ -252,7 +245,7 @@
     </option>
   </component>
   <component name="RunManager" selected="Python tests.pytest in test_parser.py">
-    <configuration name="pytest for python_fcmp.tests.test_parser.test_back_prop" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for python_fcmp.tests.test_parser.test_compute" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="python-fcmp" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -263,7 +256,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;python_fcmp.tests.test_parser.test_back_prop&quot;" />
+      <option name="_new_target" value="&quot;python_fcmp.tests.test_parser.test_compute&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -329,18 +322,18 @@
     </configuration>
     <list>
       <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_python_to_fcmp" />
-      <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_back_prop" />
       <item itemvalue="Python tests.pytest in test_parser.py" />
       <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_compute2" />
       <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_cyclic_lr" />
+      <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_compute" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python tests.pytest in test_parser.py" />
+        <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_compute2" />
+        <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_compute" />
         <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_cyclic_lr" />
         <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_python_to_fcmp" />
-        <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_back_prop" />
-        <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_compute2" />
       </list>
     </recent_temporary>
   </component>
@@ -358,34 +351,34 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_compute2 - 2019.11.20 at 11h 31m 11s.xml">
+    <history-entry file="pytest_in_test_parser_py - 2019.11.21 at 09h 12m 01s.xml">
+      <configuration name="pytest in test_parser.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_compute2 - 2019.11.21 at 09h 19m 38s.xml">
       <configuration name="pytest for python_fcmp.tests.test_parser.test_compute2" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_compute2 - 2019.11.20 at 11h 32m 23s.xml">
+    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_compute2 - 2019.11.21 at 09h 19m 43s.xml">
       <configuration name="pytest for python_fcmp.tests.test_parser.test_compute2" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_in_test_parser_py - 2019.11.20 at 11h 54m 15s.xml">
+    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_compute2 - 2019.11.21 at 09h 19m 56s.xml">
+      <configuration name="pytest for python_fcmp.tests.test_parser.test_compute2" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_compute2 - 2019.11.21 at 09h 26m 08s.xml">
+      <configuration name="pytest for python_fcmp.tests.test_parser.test_compute2" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_compute2 - 2019.11.21 at 09h 29m 21s.xml">
+      <configuration name="pytest for python_fcmp.tests.test_parser.test_compute2" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_compute2 - 2019.11.21 at 09h 29m 26s.xml">
+      <configuration name="pytest for python_fcmp.tests.test_parser.test_compute2" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_compute2 - 2019.11.21 at 09h 30m 00s.xml">
+      <configuration name="pytest for python_fcmp.tests.test_parser.test_compute2" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_in_test_parser_py - 2019.11.21 at 09h 30m 38s.xml">
       <configuration name="pytest in test_parser.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_back_prop - 2019.11.20 at 11h 55m 57s.xml">
-      <configuration name="pytest for python_fcmp.tests.test_parser.test_back_prop" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_in_test_parser_py - 2019.11.20 at 11h 56m 11s.xml">
-      <configuration name="pytest in test_parser.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_python_to_fcmp - 2019.11.20 at 11h 57m 47s.xml">
-      <configuration name="pytest for python_fcmp.tests.test_parser.test_python_to_fcmp" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_in_test_parser_py - 2019.11.20 at 11h 57m 54s.xml">
-      <configuration name="pytest in test_parser.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_cyclic_lr - 2019.11.20 at 11h 59m 13s.xml">
-      <configuration name="pytest for python_fcmp.tests.test_parser.test_cyclic_lr" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_python_fcmp_tests_test_parser_test_cyclic_lr - 2019.11.20 at 11h 59m 37s.xml">
-      <configuration name="pytest for python_fcmp.tests.test_parser.test_cyclic_lr" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_in_test_parser_py - 2019.11.20 at 11h 59m 46s.xml">
+    <history-entry file="pytest_in_test_parser_py - 2019.11.21 at 09h 34m 01s.xml">
       <configuration name="pytest in test_parser.py" configurationId="tests" />
     </history-entry>
   </component>
@@ -393,13 +386,13 @@
     <frame x="1912" y="-8" width="1096" height="1896" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16729678" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16162571" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32479784" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.33427924" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.35471055" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.392168" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.2292849" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -438,15 +431,19 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <condition expression="f_name == 'sum'" language="Python" />
-          <url>file://$PROJECT_DIR$/python_fcmp/parser.py</url>
-          <line>325</line>
-          <option name="timeStamp" value="121" />
+          <url>file://$PROJECT_DIR$/python_fcmp/fcmp.py</url>
+          <line>85</line>
+          <option name="timeStamp" value="161" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/python_fcmp/fcmp.py</url>
-          <line>83</line>
-          <option name="timeStamp" value="125" />
+          <line>37</line>
+          <option name="timeStamp" value="162" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/python_fcmp/fcmp.py</url>
+          <line>50</line>
+          <option name="timeStamp" value="163" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -458,6 +455,31 @@
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>args + [f_stmt]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>fcompute.args[n_dims-1]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>fcompute.args[n_dims]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>fcompute.args[out_dims]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.visit(node.body)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>f_name</expression-string>
         <language-id>Python</language-id>
@@ -478,38 +500,18 @@
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>parser.fcmp_prg</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>axis[1]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>axis[0]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>code + n_dims * 4 * ' ' + fcompute.prg</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>code + ret + ' = ' + operator.add(ret, a)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>code + tmp_var + ' = ' + operator.add(tmp_var, a)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
     </expressions>
     <expressions id="breakpointCondition">
+      <expression>
+        <expression-string>self.func == 'sum'</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.func == 'lam'</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>f_name == 'sum'</expression-string>
         <language-id>Python</language-id>
@@ -548,6 +550,16 @@
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
+        <expression-string>'{} to {} by {};'.format(start, end, 1)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.visit(node.body)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
         <expression-string>'[efe, fewf, s]'.split(', ')</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
@@ -579,21 +591,6 @@
       </expression>
       <expression>
         <expression-string>args</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>*args</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>str(ret[0])</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>ret[0]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -673,20 +670,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Continuum/Anaconda3/Lib/site-packages/_pytest/runner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="78" selection-start-line="78" selection-end-line="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Continuum/Anaconda3/Lib/site-packages/pluggy/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="616" selection-start-line="616" selection-end-line="616" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/python_fcmp/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="40">
@@ -694,13 +677,6 @@
           <folding>
             <element signature="e#0#82#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Continuum/Anaconda3/Lib/site-packages/pluggy/callers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="818">
-          <caret line="179" selection-start-line="179" selection-end-line="179" />
         </state>
       </provider>
     </entry>
@@ -714,6 +690,44 @@
     <entry file="file://$PROJECT_DIR$/python_fcmp/array.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/python_fcmp/function.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="39" column="12" selection-start-line="39" selection-start-column="12" selection-end-line="39" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#82#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Continuum/Anaconda3/Lib/site-packages/pluggy/callers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="179" selection-start-line="179" selection-end-line="179" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Continuum/Anaconda3/Lib/site-packages/_pytest/runner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="108" selection-start-line="108" selection-end-line="108" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Continuum/Anaconda3/Lib/site-packages/_pytest/python.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="1314" selection-start-line="1314" selection-end-line="1314" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Continuum/Anaconda3/Lib/site-packages/pluggy/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="616" selection-start-line="616" selection-end-line="616" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/python_fcmp/decorator.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="700">
@@ -721,34 +735,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/python_fcmp/function.py">
+    <entry file="file://$PROJECT_DIR$/python_fcmp/error.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="17" column="4" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
+        <state relative-caret-position="200">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Continuum/Anaconda3/Lib/ast.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="252" selection-start-line="252" selection-end-line="252" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python_fcmp/operator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="56" selection-start-line="56" selection-end-line="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python_fcmp/statement.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="703">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
           <folding>
             <element signature="e#0#82#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Continuum/Anaconda3/Lib/site-packages/_pytest/python.py">
+    <entry file="file://$PROJECT_DIR$/python_fcmp/tests/test_parser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="964">
-          <caret line="215" column="19" selection-start-line="215" selection-start-column="19" selection-end-line="215" selection-end-column="19" />
+        <state relative-caret-position="763">
+          <caret line="207" column="46" selection-start-line="207" selection-start-column="46" selection-end-line="207" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#82#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Continuum/Anaconda3/Lib/ast.py">
+    <entry file="file://$PROJECT_DIR$/python_fcmp/fcmp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="252" selection-start-line="252" selection-end-line="252" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python_fcmp/statement.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="700">
-          <caret line="35" column="28" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="28" />
+        <state relative-caret-position="200">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
           <folding>
             <element signature="e#0#82#0" expanded="true" />
           </folding>
@@ -757,8 +788,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/python_fcmp/parser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="583">
-          <caret line="405" column="106" selection-start-line="403" selection-start-column="16" selection-end-line="405" selection-end-column="106" />
+        <state relative-caret-position="400">
+          <caret line="20" column="30" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
           <folding>
             <element signature="e#0#82#0" expanded="true" />
             <element signature="e#497#991#0" />
@@ -770,42 +801,7 @@
             <element signature="e#4115#6053#0" />
             <element signature="e#5909#6624#0" />
             <element signature="e#6496#6961#0" />
-            <element signature="e#9963#10520#0" />
             <element signature="e#11456#12017#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python_fcmp/fcmp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="37" column="39" selection-start-line="37" selection-start-column="39" selection-end-line="37" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#82#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python_fcmp/operator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1745">
-          <caret line="88" column="14" selection-start-line="88" selection-start-column="14" selection-end-line="88" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python_fcmp/error.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python_fcmp/tests/test_parser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="179" column="12" lean-forward="true" selection-start-line="179" selection-start-column="12" selection-end-line="179" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#82#0" expanded="true" />
           </folding>
         </state>
       </provider>

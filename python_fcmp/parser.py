@@ -12,6 +12,8 @@ from .error import assert_fcmp_error, FCMPParserError
 from .decorator import unsupport_op_call
 from .fcmp import EXPLICIT_FUNCTION
 
+LAMBDA_EMPTY_ARGS = ['0']
+
 
 class FCMPParser(ast.NodeVisitor):
     """
@@ -269,7 +271,7 @@ class FCMPParser(ast.NodeVisitor):
                         one_dim_subscript = operator.mul(d, '({})'.format(args[i]))
                     else:
                         one_dim_subscript = operator.add(one_dim_subscript, operator.mul(d, '({})'.format(args[i])))
-                one_dim_subscript = operator.add(one_dim_subscript, args[-1])
+                one_dim_subscript = operator.add(one_dim_subscript, '({})'.format(args[-1]))
                 return '{}[{}]'.format(arr, one_dim_subscript)
             else:
                 raise FCMPParserError("Please first reshape {} "
@@ -372,6 +374,11 @@ class FCMPParser(ast.NodeVisitor):
     def visit_Lambda(self, node):
         _attr = 'id' if sys.version_info[0] < 3 else 'arg'  # To make py2 and 3 compatible
         args = [getattr(arg, _attr) for arg in node.args.args]  # put into body as variables
+        if len(args) == 0:
+            # place holder for no argument passed
+            args = [LAMBDA_EMPTY_ARGS]
+        else:
+            args = [args]
         # below should be put into iteration body
         # eg # lhs = fcmp.compute((shape,), lambda i: fcmp.sum(A[i, k], axis=k)
         # do i = 0 to shape by 1;
@@ -381,7 +388,15 @@ class FCMPParser(ast.NodeVisitor):
         # ret = []  # what should be stored, string or FCMPStmt
         # for i in range(len(node.body)):
         #     ret.append(self.visit(node.body[i]))
-        return self.visit(node.body)
+        f_stmt = self.visit(node.body)
+        if isinstance(f_stmt, str):
+            # lambda function doesn't include any fcmp function
+            pure_lambda_stmt = FCMPStmt('lambda_', args + [f_stmt], None, node.lineno, node.col_offset)
+            # dummy_f_stmt.prg = f_stmt
+            return pure_lambda_stmt
+        # adding lambda arguments into FCMPStmt's args
+        f_stmt.args = args + f_stmt.args if isinstance(f_stmt.args, list) else [f_stmt.args]
+        return f_stmt
 
     def visit_Tuple(self, node):
         return tuple(self.visit(i) for i in node.elts)

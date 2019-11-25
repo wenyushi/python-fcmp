@@ -1,21 +1,15 @@
+""" The module contains Python implementation of FCMP function. """
 from __future__ import print_function, division, absolute_import, unicode_literals
 
-from .error import assert_fcmp_error
-from python_fcmp import operator
-from .statement import FCMPStmt
-
-RECURSION_INDEX = ['i', 'j', 'm', 'n']
-EXPLICIT_FUNCTION = ['compute']  # the function will explicitly present in FCMP code
+import numpy as np
 
 
-def compute(ret, out_dims, fcompute):
+def compute(out_dims, fcompute):
     """
     Construct a new array by computing over the shape domain.
 
     Parameters
     ----------
-    ret : string
-        Specifies the return variable of the FCMP function
     out_dims : tuple
         Specifies the shape of the generated array.
     fcompute : FCMPStmt
@@ -26,127 +20,40 @@ def compute(ret, out_dims, fcompute):
     :class:`string`
 
     """
-    # fcompute should be fcmpstmt(lambda function)
-    assert_fcmp_error(type(fcompute) == FCMPStmt, "fcompute should be a lambda function type.")
-    n_dims = len(out_dims)
-    if isinstance(out_dims, str):
-        n_dims = 1
+    code = fcompute.__code__
+    # out_ndim = ndim
+    # if code.co_argcount == 0:
+    #     arg_names = ["i%d" % i for i in range(ndim)]
+    # else:
+    #     arg_names = code.co_varnames[:code.co_argcount]
+    #     out_ndim = code.co_argcount
+    #
+    # if out_ndim != len(arg_names):
+    #     raise ValueError("fcompute do not match dimension, ndim=%d" % ndim)
+    if isinstance(out_dims, int):
         out_dims = [out_dims]
-    lambda_args = fcompute.args[0]
-
-    assert_fcmp_error(n_dims == len(lambda_args),
-                      "The length of out_dims should be the same as the number of arguments in lambda function.")
-    # assign to
-    # convert multi-dims access to one dimension subscript
-    one_dim_subscript = ''
-    if n_dims == 1:
-        one_dim_subscript = lambda_args[0]
-    else:
-        for i, d in enumerate(out_dims[1:]):
-            if i == 0:
-                one_dim_subscript = operator.mul(d, '{}'.format(lambda_args[i]))
-            else:
-                one_dim_subscript = operator.add(one_dim_subscript, operator.mul(d, '{}'.format(lambda_args[i])))
-        one_dim_subscript = operator.add(one_dim_subscript, lambda_args[n_dims - 1])
-    ret = ret + '[{}]'.format(one_dim_subscript)  # A -> A[i * height + j]
-
-    code = ''
-    # out_dims loops
-    for dim in range(n_dims):
-        code += 4 * dim * ' '  # indent
-        code += 'do {} = 1 to {};\n'.format(lambda_args[dim], out_dims[dim])
-
-    # compute core we can remove str check
-    if isinstance(fcompute, str):
-        code = code + (n_dims * 4 * ' ') + ret + ' = ' + fcompute + ';\n'
-    else:
-        fcompute.ret = ret  # A -> A[i, j]
-        # indent correct
-        snippet = fcompute.prg
-        if snippet.count('\n') > 1:
-            snippet = snippet.replace('\n', '\n' + ' ' * n_dims * 4)[: -len(' ' * n_dims * 4)]
-        # compute core
-        code = code + (n_dims * 4 * ' ') + snippet
-    # loop end code
-    for dim in range(1 - n_dims, 1, 1):
-        code += 4 * -dim * ' '  # indent
-        code += 'end;\n'
-    return code
-    # code = 'do {} = 0 to {} by 1;\n' \
-    #        '    do {} = 0 to {} by 1;\n'.format()
-
-    # return np.fromfunction(fcompute, shape, dtype = float)
+    dim_var = [range(s) for s in out_dims]
+    body = fcompute(*dim_var)
+    return body
 
 
-def lambda_(ret, *args):
-    """ for args, the last item is lambda function, the first few are lambda arguments"""
-    func_core = args[-1]
-    for arg in args[0]:
-        func_core = func_core.replace(operator.add(arg, 1), arg)
-        func_core = func_core.replace('{} + 1'.format(arg), arg)
-    return ret + ' = ' + func_core + ';\n'
-
-
-def reshape(ret, a, shape):
+def reshape(a, shape):
     """ reshape doesn't present in fcmp code; it mainly uses for register fcmp variable. """
-    shape = [str(i) for i in shape]
-    return 'call dynamic_array({}, {});'.format(a, ', '.join(shape))
+    return np.reshape(a, shape)
 
 
-def sum(ret, lambda_a, a, axis):
-    """
-    Sum of array elements over a given axis or a list of axes
-
-    Parameters
-    ----------
-    ret : string
-        Specifies the return variable of the FCMP function.
-    a : string
-        Summation function.
-    axis FCMPStmt or list of FCMPStmt
-        Axis or axes along which a sum is performed.
-
-    Returns
-    -------
-    :class:`string`
-
-    """
-    # axis is a list
-    # below should be put into iteration body
-    # eg # lhs = fcmp.compute((shape,), lambda i: fcmp.sum(A[i, k], axis=k)
-    # do i = 0 to shape by 1;
-    #   do k_i = 0 to 10 by 1;
-    #       lhs[i] = lhs[i] + A[i, k_i]
-    code = ''
-    if not isinstance(axis, list):
-        axis = [axis]
-    # loop header
-    for i, ax in enumerate(axis):
-        code = code + (4 * i * ' ') + ax[1].prg
-        # correct indices eg. a[srcHeight * (hw + 1) + (wh + 1)] -> a[srcHeight * hw + wh]
-        a = a.replace(operator.add(ax[0], 1), ax[0])
-        a = a.replace(ax[0] + '1', ax[0])
-    from python_fcmp.parser import LAMBDA_EMPTY_ARGS
-    if lambda_a != LAMBDA_EMPTY_ARGS:
-        for l_a in lambda_a:
-            a = a.replace(operator.add(l_a, 1), l_a)
-            a = a.replace(l_a + '1', l_a)
-    # summation body
-    code = code + (4 * len(axis) * ' ') + ret + ' = ' + operator.add(ret, a) + ';\n'
-    # loop end
-    for i in range(1 - len(axis), 1, 1):
-        code = code + (4 * -i * ' ') + 'end;\n'
-    return code
+def sum(a, axis):
+    '''srcDeltas_out = fcmp.compute((srcDepth), lambda i: fcmp.sum(srcY[i, ht, wd] - mean[i], [ht, wd]))'''
+    np.sum(a, axis)
+    return
 
 
-def reduce_axis(ret, a):
+def reduce_axis(a):
     """
     Create an iterator for reduction.
 
     Parameters
     ----------
-    ret : string
-        Specifies the return variable of the FCMP function
     a : tuple
         Specifies the iteration range
 
@@ -155,15 +62,5 @@ def reduce_axis(ret, a):
     :class:`string`
 
     """
-    # reduce_axis((0, 10)) python 0~9; fcmp 1~10
-    if len(a) == 1:
-        start = 1
-        end = a[0]
-    elif len(a) == 2:
-        try:
-            start = str(int(a[0]) + 1)
-        except ValueError:
-            start = '{} + 1'.format(a[0])
-        end = a[1]
-    return 'do {} = {} to {} by {};\n'.format(ret, start, end, 1)
+    return range(a)
 

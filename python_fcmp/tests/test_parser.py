@@ -1,6 +1,7 @@
 from __future__ import print_function, division, absolute_import, unicode_literals
 
 import ast
+import numpy
 
 from ..parser import FCMPParser, python_to_fcmp
 from ..decorator import *
@@ -213,3 +214,35 @@ def compute_forward2(srcHeight, srcWidth, srcDepth, srcY, weights, y_out):
 
 def test_compute2():
     code = python_to_fcmp(compute_forward2, True)
+
+
+@out_args('gradient_out', 'srcDeltas_out')
+@cast_array('srcY', 'Y', 'weights', 'deltas', 'gradient_out', 'srcDeltas_out')
+def zeros_array(srcHeight, srcWidth, srcDepth, srcY, Y, weights, deltas, gradient_out, srcDeltas_out):
+    dmean = numpy.zeros((10, 20))
+    dvar = numpy.zeros((10))
+    dvar = numpy.zeros((srcWidth))
+
+    wd = fcmp.reduce_axis((0, srcWidth))
+    ht = fcmp.reduce_axis((0, srcHeight))
+
+    srcY = fcmp.reshape(srcY, (srcDepth, srcHeight, srcWidth))
+    deltas = fcmp.reshape(deltas, (srcDepth, srcHeight, srcWidth))
+
+    esp = 0.0001
+    mean = 0
+    mean = fcmp.compute((srcDepth), lambda i: fcmp.sum(srcY[i, ht, wd] / srcHeight / srcWidth, [ht, wd]))
+    var = fcmp.compute((srcDepth),
+                       lambda i: fcmp.sum((srcY[i, ht, wd] - mean[i]) ** 2 / srcHeight / srcWidth, [ht, wd]))
+    grad_sigma = fcmp.compute((srcDepth), lambda i: fcmp.sum(deltas[i, ht, wd] * (srcY[i] - mean[i]), [ht, wd]))
+
+
+def test_zeros_array():
+    code = python_to_fcmp(zeros_array, True)
+
+
+def test_python_fcmp_function():
+    from python_fcmp import fcmp
+    x = numpy.arange(0, 9).reshape(((3, 3)))
+    j = fcmp.reduce_axis(3)
+    x = fcmp.compute((3), lambda i: fcmp.sum(x[i, j], j))

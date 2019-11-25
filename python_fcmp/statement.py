@@ -1,6 +1,6 @@
 from __future__ import print_function, division, absolute_import, unicode_literals
 
-from . import fcmp
+from python_fcmp.codegen import numpy, fcmp
 
 
 class Stmt:
@@ -44,11 +44,14 @@ class FCMPStmt(Stmt):
         self._prg = getattr(fcmp, self.func)(self.ret, *self.args)
         return self._prg
 
-    def __str__(self):
-        return self.prg
 
-    def __lt__(self, other):
-        if self.lineno == other.lineno:
-            return self.col_offset < other.col_offset
-        else:
-            return self.lineno < other.col_offset
+class NumpyStmt(FCMPStmt):
+    def __init__(self, func, args, ret, lineno, col_offset):
+        super(NumpyStmt, self).__init__(func, args, ret, lineno, col_offset)
+
+    @property
+    def prg(self):
+        if self._prg is not None:
+            return self._prg
+        self._prg = getattr(numpy, self.func)(self.ret, *self.args)
+        return self._prg

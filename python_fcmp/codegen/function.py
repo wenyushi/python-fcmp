@@ -1,6 +1,6 @@
 from __future__ import print_function, division, absolute_import, unicode_literals
 
-from .error import assert_fcmp_error
+from python_fcmp.error import assert_fcmp_error
 
 
 def cast_array(*args):

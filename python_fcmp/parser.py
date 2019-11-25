@@ -5,12 +5,11 @@ import ast
 from pprint import pprint
 from inspect import getsource
 
-from python_fcmp import operator
-from python_fcmp import function
-from .statement import Stmt, FCMPStmt
+from python_fcmp.codegen import function, operator, fcmp
+from .statement import Stmt, FCMPStmt, NumpyStmt
 from .error import assert_fcmp_error, FCMPParserError
 from .decorator import unsupport_op_call
-from .fcmp import EXPLICIT_FUNCTION
+from .utils import build_one_dim_subscript
 
 LAMBDA_EMPTY_ARGS = ['0']
 
@@ -60,10 +59,7 @@ class FCMPParser(ast.NodeVisitor):
         'pow': function.pow_,
         'sum': function.sum_,
         'int': function.int_,
-        'abs': function.abs_,
-        # 'compute': function.compute,
-        # 'reshape': function.reshape,
-        # 'iterator': function.iterator
+        'abs': function.abs_
     }
 
     def __init__(self):
@@ -129,7 +125,7 @@ class FCMPParser(ast.NodeVisitor):
         lhs = node.targets[0]
         lhs = self.visit(lhs)
         # check rhs type
-        if type(rhs) is not FCMPStmt:
+        if not isinstance(rhs, Stmt):
             self.stmts.append(Stmt('{} = {};'.format(lhs, rhs),
                                    node.lineno,
                                    node.col_offset
@@ -260,24 +256,20 @@ class FCMPParser(ast.NodeVisitor):
         # should return a string
         args = self.visit(node.slice)
         arr = self.visit(node.value)
-        if isinstance(args, list):
+        # if it is a multi-subscripts
+        if isinstance(args, tuple):
             if arr in self.variable_dict:
                 # get the variable's shape which is added into self.variable_dict via fcmp.reshape function
                 t_dims = self.variable_dict[arr].args[1]
                 # convert multi-dims access to one dimension subscript
-                one_dim_subscript = ''
-                for i, d in enumerate(t_dims[1:]):
-                    if i == 0:
-                        one_dim_subscript = operator.mul(d, '({})'.format(args[i]))
-                    else:
-                        one_dim_subscript = operator.add(one_dim_subscript, operator.mul(d, '({})'.format(args[i])))
-                one_dim_subscript = operator.add(one_dim_subscript, '({})'.format(args[-1]))
+                one_dim_subscript = build_one_dim_subscript(t_dims, args)
                 return '{}[{}]'.format(arr, one_dim_subscript)
             else:
                 raise FCMPParserError("Please first reshape {} "
                                       "and then access the elements of it like multiple dimensions".format(arr))
                 # return '{}[{}]'.format(arr, ', '.join(args))
         else:
+            # otherwise one dimension subscript
             return '{}[{}]'.format(arr, args)
 
     def visit_Index(self, node):
@@ -286,21 +278,21 @@ class FCMPParser(ast.NodeVisitor):
         #     raise FCMPParserError("Multiple index doesn't support")
         # FCMP index starting from 1
         idx = self.visit(node.value)
+        # if idx is not a tuple, that means it is one dimension subscript, we will add it by one
         if not isinstance(node.value, ast.Tuple):
-            idx = [idx]
-        ret = []
-        for i in range(len(idx)):
             try:
-                ret.append(str(int(idx[i]) + 1))
+                idx = str(int(idx) + 1)
             except ValueError:
-                ret.append('{} + {}'.format(idx[i], '1'))
-        return ret[0] if len(ret) == 1 else ret
+                idx = '{} + {}'.format(idx, '1')
+        # otherwise return the multi-subscripts
+        return idx
 
     @unsupport_op_call
     def visit_Call(self, node):
-        # Only support fcmp function pointer
+        # Only support fcmp and numpy function pointer
         if isinstance(node.func, ast.Attribute):
-            f_name = self.visit(node.func)
+            caller, f_name = self.visit(node.func)
+
             args = []
             for n in node.args:
                 # check if there are any fcmp function variable in the node.args
@@ -323,9 +315,11 @@ class FCMPParser(ast.NodeVisitor):
                         args.append(tuple((arg, self.variable_dict[arg])))
                     else:
                         args.append(arg)
-
-            # return FCMPStmt which store rich info
-            return FCMPStmt(f_name, args, None, node.lineno, node.col_offset)
+            if caller == 'fcmp':
+                # return FCMPStmt which store rich info
+                return FCMPStmt(f_name, args, None, node.lineno, node.col_offset)
+            elif caller == 'numpy':
+                return NumpyStmt(f_name, args, None, node.lineno, node.col_offset)
         else:  # non function pointer call
             assert_fcmp_error(isinstance(node.func, ast.Name),
                               "Only id-function function or FCMP call is supported so far!")
@@ -366,10 +360,10 @@ class FCMPParser(ast.NodeVisitor):
 
     def visit_Attribute(self, node):
         buf = self.visit(node.value)
-        assert_fcmp_error(buf == 'fcmp',
+        assert_fcmp_error(buf in ['fcmp', 'numpy'],
                           "Only FCMP call is supported so far!")
 
-        return node.attr  # return fcmp function name
+        return buf, node.attr  # return fcmp function name
 
     def visit_Lambda(self, node):
         _attr = 'id' if sys.version_info[0] < 3 else 'arg'  # To make py2 and 3 compatible
@@ -409,7 +403,7 @@ class FCMPParser(ast.NodeVisitor):
         pre_col_offset = self.stmts[0].col_offset
         for stmt in self.stmts:
             if type(stmt) is FCMPStmt:
-                if stmt.func not in EXPLICIT_FUNCTION:
+                if stmt.func not in fcmp.EXPLICIT_FUNCTION:
                     continue
             # current line number that is the same as prior line number will append statement after prior statement
             if stmt.lineno == pre_lineno and stmt.col_offset <= pre_col_offset:

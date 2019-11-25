@@ -1,0 +1,13 @@
+[
+  "python_fcmp/tests/test_parser.py::test_parser",
+  "python_fcmp/tests/test_parser.py::test_cyclic_lr",
+  "python_fcmp/tests/test_parser.py::test_python_to_fcmp",
+  "python_fcmp/tests/test_parser.py::test_back_prop",
+  "python_fcmp/tests/test_parser.py::test_decorator",
+  "python_fcmp/tests/test_parser.py::test_for_loop",
+  "python_fcmp/tests/test_parser.py::test_fcmp_function",
+  "python_fcmp/tests/test_parser.py::test_compute",
+  "python_fcmp/tests/test_parser.py::test_compute2",
+  "python_fcmp/tests/test_parser.py::test_zeros_array",
+  "python_fcmp/tests/test_parser.py::test_python_fcmp_function"
+]

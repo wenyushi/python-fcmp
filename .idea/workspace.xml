@@ -231,7 +231,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for python_fcmp.tests.test_parser.test_python_fcmp_function">
+  <component name="RunManager" selected="Python tests.pytest in test_parser.py">
     <configuration name="pytest for python_fcmp.tests.test_parser.test_compute" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="python-fcmp" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -316,10 +316,10 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest in test_parser.py" />
         <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_python_fcmp_function" />
         <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_compute2" />
         <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_zeros_array" />
-        <item itemvalue="Python tests.pytest in test_parser.py" />
         <item itemvalue="Python tests.pytest for python_fcmp.tests.test_parser.test_compute" />
       </list>
     </recent_temporary>

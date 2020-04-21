@@ -67,6 +67,7 @@ class FCMPParser(ast.NodeVisitor):
         self._fcmp_prg = None
         self.func_name = None
         self.variable_dict = dict()  # the dict stores fcmp variable and value
+        self.loop_variable = []
 
     def visit_Module(self, node):
         assert_fcmp_error(len(node.body) == 1, "Only one-function source code will be fed to this parser!")
@@ -135,9 +136,19 @@ class FCMPParser(ast.NodeVisitor):
             self.variable_dict[lhs] = rhs
             rhs.lineno = node.lineno
             rhs.col_offset = node.col_offset
+            # self.stmts.append(rhs)
+            if rhs.func in fcmp.ASSIGN_FUNCTION and type(rhs) == FCMPStmt:
+                rhs.set_prg('{} = {};'.format(lhs, rhs.prg))
+                # rhs.prg = '{} = {};'.format(lhs, rhs.prg)
             self.stmts.append(rhs)
+            # self.stmts.append(Stmt('{} = {};'.format(lhs, rhs.prg),
+            #                        node.lineno,
+            #                        node.col_offset
+            #                        ))
 
     def visit_Name(self, node):
+        # if node.id in self.loop_variable:
+        #     node.id = '({} - 1)'.format(node.id)
         return node.id
 
     @unsupport_op_call
@@ -254,6 +265,8 @@ class FCMPParser(ast.NodeVisitor):
 
     def visit_Subscript(self, node):
         # should return a string
+        tmp = self.loop_variable
+        self.loop_variable = []
         args = self.visit(node.slice)
         arr = self.visit(node.value)
         # if it is a multi-subscripts
@@ -263,6 +276,7 @@ class FCMPParser(ast.NodeVisitor):
                 t_dims = self.variable_dict[arr].args[1]
                 # convert multi-dims access to one dimension subscript
                 one_dim_subscript = build_one_dim_subscript(t_dims, args)
+                self.loop_variable = tmp
                 return '{}[{}]'.format(arr, one_dim_subscript)
             else:
                 raise FCMPParserError("Please first reshape {} "
@@ -270,6 +284,7 @@ class FCMPParser(ast.NodeVisitor):
                 # return '{}[{}]'.format(arr, ', '.join(args))
         else:
             # otherwise one dimension subscript
+            self.loop_variable = tmp
             return '{}[{}]'.format(arr, args)
 
     def visit_Index(self, node):
@@ -340,9 +355,12 @@ class FCMPParser(ast.NodeVisitor):
                                node.lineno,
                                node.col_offset)
                           )
-
+        
+        # stack to store local loop variable
+        self.loop_variable.append(_name)
         for i in range(len(node.body)):
             self.visit(node.body[i])
+        self.loop_variable.remove(_name)
         # for end statement
         self.stmts.append(Stmt('end;',
                                -1,

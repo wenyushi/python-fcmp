@@ -1,0 +1,6 @@
+.idea/*
+.vscode/
+python_fcmp/__pycache__/*
+python_fcmp/codegen/__pycache__/*
+examples/.ipynb_checkpoints/*
+examples/reshape _layer_fcmp-Copy1.ipynb

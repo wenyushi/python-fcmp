@@ -2,6 +2,7 @@
 from __future__ import print_function, division, absolute_import, unicode_literals
 
 import numpy as np
+import math
 
 
 def compute(out_dims, fcompute):
@@ -64,3 +65,8 @@ def reduce_axis(a):
     """
     return range(a)
 
+def floor(a):
+    return math.floor(a)
+
+def ceil(a):
+    return math.ceil(a)

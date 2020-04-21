@@ -5,8 +5,10 @@ from python_fcmp.codegen import operator
 from python_fcmp.statement import FCMPStmt
 from python_fcmp.utils import build_one_dim_subscript
 
+ASSIGN_FUNCTION = ['floor', 'ceil']
 EXPLICIT_FUNCTION = ['compute', 'zeros']  # the function will explicitly present in FCMP code
-__all__ = ['compute', 'reshape', 'sum', 'reduce_axis', 'lambda_']
+EXPLICIT_FUNCTION += ASSIGN_FUNCTION
+__all__ = ['compute', 'reshape', 'sum', 'reduce_axis', 'lambda_', 'floor', 'ceil']
 
 
 def compute(ret, out_dims, fcompute):
@@ -83,6 +85,14 @@ def reshape(ret, a, shape):
     """ reshape doesn't present in fcmp code; it mainly uses for register fcmp variable. """
     shape = [str(i) for i in shape]
     return 'call dynamic_array({}, {});'.format(a, ', '.join(shape))
+
+
+def floor(ret, a):
+    return 'floor({})'.format(a)
+
+
+def ceil(ret, a):
+    return 'ceil({})'.format(a)
 
 
 def sum(ret, lambda_a, a, axis):

@@ -12,6 +12,9 @@ class Stmt:
     @property
     def prg(self):
         return self._prg
+    
+    def set_prg(self, x):
+        self._prg = x
 
     def __str__(self):
         return self.prg
